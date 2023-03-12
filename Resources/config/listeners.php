@@ -23,8 +23,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Contacts\Region\Entity;
-use BaksDev\Contacts\Region\EntityListeners;
+use BaksDev\Reference\Region\Entity;
+use BaksDev\Reference\Region\EntityListeners;
 
 return static function (ContainerConfigurator $configurator)
 {
@@ -33,12 +33,12 @@ return static function (ContainerConfigurator $configurator)
       ->autowire()
       ->autoconfigure();
     
-//    /** EntityListeners */
-//    $services->set(EntityListeners\ContacRegionModifyListener::class)
-//      ->class(EntityListeners\ContacRegionModifyListener::class)
-//      ->tag(
-//        'doctrine.orm.entity_listener',
-//        ['event' => 'prePersist', 'lazy' => true, 'entity' => Entity\Modify\ContactsRegionModify::class]);
-//
+    /** EntityListeners */
+    $services->set(EntityListeners\RegionModifyListener::class)
+      ->class(EntityListeners\RegionModifyListener::class)
+      ->tag(
+        'doctrine.orm.entity_listener',
+        ['event' => 'prePersist', 'lazy' => true, 'entity' => Entity\Modify\RegionModify::class]);
+
 
 };

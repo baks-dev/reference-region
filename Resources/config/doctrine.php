@@ -23,42 +23,26 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-
-
-use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallType;
-use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
-use BaksDev\Contacts\Region\Type\Call\Email\ContactRegionEmail;
-use BaksDev\Contacts\Region\Type\Call\Email\ContactRegionEmailType;
-use BaksDev\Contacts\Region\Type\Call\Gps\ContactRegionGps;
-use BaksDev\Contacts\Region\Type\Call\Gps\ContactRegionGpsType;
-use BaksDev\Contacts\Region\Type\Call\Phone\ContactsRegionCallPhoneType;
-use BaksDev\Contacts\Region\Type\Call\Phone\ContactsRegionCallPhoneUid;
-use BaksDev\Contacts\Region\Type\Event\ContactsRegionEventType;
-use BaksDev\Contacts\Region\Type\Event\ContactsRegionEventUid;
-use BaksDev\Contacts\Region\Type\Id\ContactsRegionType;
-use BaksDev\Contacts\Region\Type\Id\ContactsRegionUid;
+use BaksDev\Reference\Region\Type\Event\RegionEventType;
+use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Reference\Region\Type\Id\RegionType;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Symfony\Config\DoctrineConfig;
 
 return static function(ContainerConfigurator $container, DoctrineConfig $doctrine) {
 	
-//	$doctrine->dbal()->type(ContactsRegionUid::TYPE)->class(ContactsRegionType::class);
-//	$doctrine->dbal()->type(ContactsRegionCallUid::TYPE)->class(ContactsRegionCallType::class);
-//	$doctrine->dbal()->type(ContactsRegionCallPhoneUid::TYPE)->class(ContactsRegionCallPhoneType::class);
-//	$doctrine->dbal()->type(ContactRegionGps::TYPE)->class(ContactRegionGpsType::class);
-//	$doctrine->dbal()->type(ContactRegionEmail::TYPE)->class(ContactRegionEmailType::class);
-//
-//	$doctrine->dbal()->type(ContactsRegionEventUid::TYPE)->class(ContactsRegionEventType::class);
-//	$doctrine->dbal()->type(ContactsRegionEventUid::TYPE)->class(ContactsRegionEventType::class);
-//
-//	$emDefault = $doctrine->orm()->entityManager('default');
-//
-//	$emDefault->autoMapping(true);
-//	$emDefault->mapping('ContactsRegion')
-//		->type('attribute')
-//		->dir(__DIR__.'/../../Entity')
-//		->isBundle(false)
-//		->prefix('BaksDev\Contacts\Region\Entity')
-//		->alias('ContactsRegion')
-//	;
+	$doctrine->dbal()->type(RegionUid::TYPE)->class(RegionType::class);
+	$doctrine->dbal()->type(RegionEventUid::TYPE)->class(RegionEventType::class);
+
+	$emDefault = $doctrine->orm()->entityManager('default');
+
+	$emDefault->autoMapping(true);
+	$emDefault->mapping('ReferenceRegion')
+		->type('attribute')
+		->dir(__DIR__.'/../../Entity')
+		->isBundle(false)
+		->prefix('BaksDev\Contacts\Region\Entity')
+		->alias('ReferenceRegion')
+	;
 
 };
