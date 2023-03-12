@@ -1,0 +1,45 @@
+{
+  "name": "baks-dev/reference-region",
+  "description": "Библиотека регионов",
+  "homepage": "https://github.com/baks-dev/reference-region",
+  "keywords": [
+    "bundle",
+    "symfony",
+    "library",
+    "reference",
+    "region",
+    "baks"
+  ],
+  "license": "MIT",
+  "type": "symfony-bundle",
+  "authors": [
+    {
+      "name": "Baks Development",
+      "email": "admin@baks.dev"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "symfony/twig-pack": "^1.0",
+    "symfony/orm-pack": "^2.3"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "BaksDev\\Reference\\Region\\": ""
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BaksDev\\Reference\\Region\\Tests\\": "Tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "symfony/flex": true
+    }
+  }
+}
