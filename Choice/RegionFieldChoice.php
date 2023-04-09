@@ -23,29 +23,36 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Id;
+namespace BaksDev\Reference\Region\Choice;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
+use BaksDev\Core\Services\Fields\FieldsChoiceInterface;
+use BaksDev\Core\Services\Reference\ReferenceChoiceInterface;
+use BaksDev\Reference\Region\Form\RegionFieldForm;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
 
-final class RegionUid extends Uid
+final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceInterface
 {
-	public const TYPE = 'region_uid';
 	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
+	public function equals($key) : bool
 	{
-		parent::__construct($value);
-		
-		$this->option = $option;
+		return $key === RegionUid::TYPE;
+	}
+	
+	public function type() : string
+	{
+		return RegionUid::TYPE;
+	}
+	
+	public function domain() : string
+	{
+		return 'reference.region';
 	}
 	
 	
-	public function getOption() : ?string
+	/** Возвращает класс формы для рендера */
+	public function form() : string
 	{
-		return $this->option;
+		return RegionFieldForm::class;
 	}
 	
 }

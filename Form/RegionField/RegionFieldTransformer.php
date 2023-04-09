@@ -23,29 +23,26 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Id;
+namespace BaksDev\Reference\Region\Form;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
+use BaksDev\Field\Tire\Profile\Type\TireProfileField;
+use Symfony\Component\Form\DataTransformerInterface;
 
-final class RegionUid extends Uid
+final class RegionFieldTransformer implements DataTransformerInterface
 {
-	public const TYPE = 'region_uid';
 	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
+	public function transform(mixed $value)
 	{
-		parent::__construct($value);
+		//if(empty($value)) { return null; }
+		//return new TireProfileField((int) $value);
 		
-		$this->option = $option;
+		return $value;
 	}
 	
 	
-	public function getOption() : ?string
+	public function reverseTransform(mixed $value) : string
 	{
-		return $this->option;
+		return (string) $value;
 	}
 	
 }

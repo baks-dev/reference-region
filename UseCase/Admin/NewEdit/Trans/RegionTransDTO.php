@@ -23,29 +23,68 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Id;
+namespace BaksDev\Reference\Region\UseCase\Admin\NewEdit\Trans;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
+use BaksDev\Reference\Region\Entity\Trans\RegionTransInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use BaksDev\Core\Type\Locale\Locale;
 
-final class RegionUid extends Uid
+final class RegionTransDTO implements RegionTransInterface
 {
-	public const TYPE = 'region_uid';
 	
-	private ?string $option;
+	/** Локаль */
+	#[Assert\NotBlank]
+	private readonly Locale $local;
 	
+	/** Название  */
+	#[Assert\NotBlank]
+	private ?string $name;
 	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
+	/** Детальное описание */
+	private ?string $description = null;
+	
+	/** Локаль */
+	
+	public function getLocal() : Locale
 	{
-		parent::__construct($value);
-		
-		$this->option = $option;
+		return $this->local;
 	}
 	
 	
-	public function getOption() : ?string
+	public function setLocal(Locale $local) : void
 	{
-		return $this->option;
+		if(!(new \ReflectionProperty($this::class, 'local'))->isInitialized($this))
+		{
+			$this->local = $local;
+		}
+	}
+	
+	
+	/** Название продукта  */
+	
+	public function getName() : string
+	{
+		return $this->name;
+	}
+	
+	
+	public function setName(?string $name) : void
+	{
+		$this->name = $name;
+	}
+	
+	
+	/** Краткое описание */
+	
+	public function getDescription() : ?string
+	{
+		return $this->description;
+	}
+	
+	
+	public function setDescription(?string $description) : void
+	{
+		$this->description = $description;
 	}
 	
 }

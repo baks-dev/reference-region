@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Entity;
 
+use BaksDev\Reference\Region\Entity\Event\RegionEvent;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,6 +48,7 @@ class Region
 	/** ID События */
 	#[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
 	private RegionEventUid $event;
+	
 	
 	
 	public function __construct()

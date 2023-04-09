@@ -21,31 +21,10 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\Repository\ReferenceRegionChoice;
 
-namespace BaksDev\Reference\Region\Type\Id;
-
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
-
-final class RegionUid extends Uid
+interface ReferenceRegionChoiceInterface
 {
-	public const TYPE = 'region_uid';
-	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
-	{
-		parent::__construct($value);
-		
-		$this->option = $option;
-	}
-	
-	
-	public function getOption() : ?string
-	{
-		return $this->option;
-	}
+	public function getRegionChoice();
 	
 }

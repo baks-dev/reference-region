@@ -23,29 +23,42 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Id;
+namespace BaksDev\Reference\Region\Controller\Admin;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
+use BaksDev\Contacts\Region\Repository\AllContactsRegion\AllContactsRegionInterface;
+use BaksDev\Core\Controller\AbstractController;
+use BaksDev\Core\Form\Search\SearchDTO;
+use BaksDev\Core\Form\Search\SearchForm;
+use BaksDev\Core\Services\Security\RoleSecurity;
 
-final class RegionUid extends Uid
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[RoleSecurity(['ROLE_ADMIN', 'ROLE_REGION'])]
+final class IndexController extends AbstractController
 {
-	public const TYPE = 'region_uid';
-	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
-	{
-		parent::__construct($value);
+	#[Route('/admin/regions/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
+	public function index(
+		Request $request,
+		//AllContactsRegionInterface $allContactsRegion,
+		int $page = 0,
+	) : Response {
 		
-		$this->option = $option;
+		dd('Reference Region');
+		
+		/* Поиск */
+		$search = new SearchDTO();
+		$searchForm = $this->createForm(SearchForm::class, $search);
+		$searchForm->handleRequest($request);
+		
+		/* Получаем список */
+		$contacts = $allContactsRegion->fetchAllContactsRegionAssociative($search);
+		
+		return $this->render(
+			[
+				'query' => $contacts,
+				'search' => $searchForm->createView(),
+			]); 
 	}
-	
-	
-	public function getOption() : ?string
-	{
-		return $this->option;
-	}
-	
 }

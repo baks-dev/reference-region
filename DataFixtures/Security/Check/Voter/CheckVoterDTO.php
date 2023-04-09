@@ -21,31 +21,33 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\DataFixtures\Security\Check\Voter;
 
-namespace BaksDev\Reference\Region\Type\Id;
+use BaksDev\Users\Groups\Group\Entity\CheckRole\CheckVoter\CheckVoterInterface;
+use BaksDev\Users\Groups\Role\Type\VoterPrefix\VoterPrefix;
+use Symfony\Component\Validator\Constraints as Assert;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
-
-final class RegionUid extends Uid
+final class CheckVoterDTO implements CheckVoterInterface
 {
-	public const TYPE = 'region_uid';
-	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
-	{
-		parent::__construct($value);
-		
-		$this->option = $option;
-	}
-	
-	
-	public function getOption() : ?string
-	{
-		return $this->option;
-	}
-	
+    /** Префикс правила */
+    #[Assert\NotBlank]
+    private VoterPrefix $voter;
+    
+    /**
+     * @return VoterPrefix
+     */
+    public function getVoter() : VoterPrefix
+    {
+        return $this->voter;
+    }
+    
+    /**
+     * @param VoterPrefix $voter
+     */
+    public function setVoter(VoterPrefix $voter) : void
+    {
+        $this->voter = $voter;
+    }
+
 }
+

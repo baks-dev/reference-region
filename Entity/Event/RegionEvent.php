@@ -29,6 +29,8 @@ use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Core\Type\Modify\ModifyActionEnum;
 use BaksDev\Reference\Region\Entity\Modify\RegionModify;
+use BaksDev\Reference\Region\Entity\Region;
+use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\Common\Collections\Collection;
@@ -54,15 +56,23 @@ class RegionEvent extends EntityEvent
 	
 	/** ID Region */
 	#[ORM\Column(type: RegionUid::TYPE, nullable: false)]
-	private ?RegionUid $main = null;
+	private ?RegionUid $region = null;
 	
 	/** Модификатор */
 	#[ORM\OneToOne(mappedBy: 'event', targetEntity: RegionModify::class, cascade: ['all'])]
 	private RegionModify $modify;
 	
 	/** Перевод */
-	//#[ORM\OneToMany(mappedBy: 'event', targetEntity: RegionTrans::class, cascade: ['all'])]
-	//private Collection $translate;
+	#[ORM\OneToMany(mappedBy: 'event', targetEntity: RegionTrans::class, cascade: ['all'])]
+	private Collection $translate;
+	
+	/** Сортировка */
+	#[ORM\Column(type: Types::SMALLINT, length: 3, options: ['default' => 500])]
+	private int $sort = 500;
+	
+	/** Флаг активности */
+	#[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+	private bool $active = true;
 	
 	public function __construct()
 	{
@@ -90,15 +100,15 @@ class RegionEvent extends EntityEvent
 	}
 	
 	
-	public function setMain(RegionUid|Region $main) : void
+	public function setMain(RegionUid|Region $region) : void
 	{
-		$this->main = $main instanceof Region ? $main->getId() : $main;
+		$this->region = $region instanceof Region ? $region->getId() : $region;
 	}
 	
 	
 	public function getMain() : ?RegionUid
 	{
-		return $this->main;
+		return $this->region;
 	}
 	
 	
@@ -134,19 +144,20 @@ class RegionEvent extends EntityEvent
 	//		return $this->image ?: $this->image = new RegionImage($this);
 	//	}
 	
-	//	public function getNameByLocale(Locale $locale) : ?string
-	//	{
-	//		$name = null;
-	//		
-	//		/** @var RegionTrans $trans */
-	//		foreach($this->translate as $trans)
-	//		{
-	//			if($name = $trans->name($locale))
-	//			{
-	//				break;
-	//			}
-	//		}
-	//		
-	//		return $name;
-	//	}
+	public function getNameByLocale(Locale $locale) : ?string
+	{
+		$name = null;
+		
+		/** @var RegionTrans $trans */
+		foreach($this->translate as $trans)
+		{
+			if($name = $trans->name($locale))
+			{
+				break;
+			}
+		}
+		
+		return $name;
+	}
+	
 }

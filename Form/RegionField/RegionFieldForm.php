@@ -23,29 +23,52 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Id;
+namespace BaksDev\Reference\Region\Form;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
+use BaksDev\Field\Tire\Profile\Type\TireProfileField;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class RegionUid extends Uid
+final class RegionFieldForm extends AbstractType
 {
-	public const TYPE = 'region_uid';
 	
-	private ?string $option;
+	private RegionFieldTransformer $transformer;
 	
 	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
+	public function __construct(RegionFieldTransformer $transformer)
 	{
-		parent::__construct($value);
-		
-		$this->option = $option;
+		$this->transformer = $transformer;
+	}
+	
+	public function buildForm(FormBuilderInterface $builder, array $options) : void
+	{
+		$builder->addModelTransformer($this->transformer);
 	}
 	
 	
-	public function getOption() : ?string
+	public function configureOptions(OptionsResolver $resolver) : void
 	{
-		return $this->option;
+		$resolver->setDefaults([
+			'choices' => TireProfileField::cases(),
+			'choice_value' => function($status) {
+				return $status?->getValue();
+			},
+			'choice_label' => function($status) {
+				return $status->getValue();
+			},
+			'translation_domain' => 'reference.region',
+			'placeholder' => 'placeholder',
+			'attr' => [ 'data-select' => 'select2' ],
+		]);
+	}
+	
+	
+	public function getParent()
+	{
+		return ChoiceType::class;
 	}
 	
 }

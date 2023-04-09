@@ -21,31 +21,52 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\DataFixtures\Security\Role\Voter\Trans;
 
-namespace BaksDev\Reference\Region\Type\Id;
+use BaksDev\Users\Groups\Role\Entity\Voters\Trans\VoterTransInterface;
+use BaksDev\Core\Type\Locale\Locale;
 
-use BaksDev\Core\Type\UidType\Uid;
-use Symfony\Component\Uid\AbstractUid;
-
-final class RegionUid extends Uid
+final class VoterTransDTO implements VoterTransInterface
 {
-	public const TYPE = 'region_uid';
-	
-	private ?string $option;
-	
-	
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
-	{
-		parent::__construct($value);
-		
-		$this->option = $option;
-	}
-	
-	
-	public function getOption() : ?string
-	{
-		return $this->option;
-	}
-	
+    
+    /** Локаль */
+    private Locale $local;
+    
+    /** Название */
+    private string $name;
+    
+    /**
+     * @return Locale
+     */
+    public function getLocal() : Locale
+    {
+        return $this->local;
+    }
+    
+    /**
+     * @param Locale $local
+     */
+    public function setLocal(Locale $local) : void
+    {
+        $this->local = $local;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName() : string
+    {
+        return $this->name;
+    }
+    
+    /**
+     * @param string $name
+     */
+    public function setName(string $name) : void
+    {
+        $this->name = $name;
+    }
+    
+    
 }
+

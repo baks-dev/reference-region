@@ -68,7 +68,11 @@ class RegionTrans extends EntityEvent
 		$this->event = $event;
 	}
 	
-	
+	public function getEvent() : RegionEvent
+	{
+		return $this->event;
+	}
+
 	public function getDto($dto) : mixed
 	{
 		if($dto instanceof RegionTransInterface)
@@ -101,5 +105,4 @@ class RegionTrans extends EntityEvent
 		
 		return null;
 	}
-	
 }

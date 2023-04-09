@@ -1,3 +1,6 @@
+placeholder: 'Select a region from the list...'
+label: 'Region'
+
 admin:
 
   page:
