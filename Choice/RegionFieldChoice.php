@@ -42,8 +42,14 @@ final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceI
 	{
 		return RegionUid::TYPE;
 	}
-	
-	public function domain() : string
+
+    public function class(): string
+    {
+        return RegionUid::class;
+    }
+
+
+    public function domain() : string
 	{
 		return 'reference.region';
 	}

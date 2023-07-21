@@ -25,61 +25,54 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\DataFixtures\Regions;
 
+use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit;
-use BaksDev\Core\Type\Locale\Locale;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 final class RegionsFixtures extends Fixture
 {
-	private NewEdit\RegionHandler $handler;
-	
-	
-	public function __construct(NewEdit\RegionHandler $handler) {
-		$this->handler = $handler;
-	}
-	
-	
-	public function load(ObjectManager $manager) : void
-	{
-		# php bin/console doctrine:fixtures:load --append
-		
-		$regions = include __DIR__.'/regions.php';
-		
-		foreach($regions as $region)
-		{
+    private NewEdit\RegionHandler $handler;
 
-			$RegionDTO = new NewEdit\RegionDTO();
-			$persist = false;
-			
-			/** @var \BaksDev\Core\Type\Locale\Locale $local  */
-			foreach(Locale::cases() as $local)
-			{
-				$RegionTrans = $manager->getRepository(RegionTrans::class)->findOneBy(['name' => $region[$local->getValue()], 'local' => $local->getValue()]);
-				
-				if($RegionTrans)
-				{
-					$Event = $RegionTrans->getEvent();
-					$Event->getDto($RegionDTO);
-				}
-				
-				if(!$RegionTrans)
-				{
-					$RegionTransDTO = new NewEdit\Trans\RegionTransDTO();
-					$RegionTransDTO->setLocal($local);
-					$RegionTransDTO->setName($region[$local->getValue()]);
-					$RegionDTO->addTranslate($RegionTransDTO);
-					$persist = true;
-				}
-			}
-			
+    public function __construct(NewEdit\RegionHandler $handler)
+    {
+        $this->handler = $handler;
+    }
 
-			if($persist)
-			{
-				$this->handler->handle($RegionDTO);
-			}
-		}
+    public function load(ObjectManager $manager): void
+    {
+        return;
 
-	}
+        // php bin/console doctrine:fixtures:load --append
+
+        $regions = include __DIR__.'/regions.php';
+
+        foreach ($regions as $region) {
+            $RegionDTO = new NewEdit\RegionDTO();
+            $persist = false;
+
+            /** @var Locale $local */
+            foreach (Locale::cases() as $local) {
+                $RegionTrans = $manager->getRepository(RegionTrans::class)->findOneBy(['name' => $region[$local->getValue()], 'local' => $local->getValue()]);
+
+                if ($RegionTrans) {
+                    $Event = $RegionTrans->getEvent();
+                    $Event->getDto($RegionDTO);
+                }
+
+                if (!$RegionTrans) {
+                    $RegionTransDTO = new NewEdit\Trans\RegionTransDTO();
+                    $RegionTransDTO->setLocal($local);
+                    $RegionTransDTO->setName($region[$local->getValue()]);
+                    $RegionDTO->addTranslate($RegionTransDTO);
+                    $persist = true;
+                }
+            }
+
+            if ($persist) {
+                $this->handler->handle($RegionDTO);
+            }
+        }
+    }
 }

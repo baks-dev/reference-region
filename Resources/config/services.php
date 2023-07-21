@@ -33,23 +33,12 @@ return static function (ContainerConfigurator $configurator)
 	
 	$namespace = 'BaksDev\Reference\Region';
 
-    /** Services */
-	
-	$services->load($namespace.'\Controller\\', __DIR__.'/../../Controller')
-		->tag('controller.service_arguments')
-	;
+    $services->load($namespace.'\\', __DIR__.'/../../')
+        ->exclude(__DIR__.'/../../{Controller,Entity,Resources,Type,Tests,*DTO.php,*Message.php, regions.php}');
 
-	$services->load($namespace.'\Repository\\', __DIR__.'/../../Repository')
-		//->exclude(__DIR__.'/../../Repository/**/*DTO.php')
-	;
-	
-	$services->load($namespace.'\UseCase\\', __DIR__.'/../../UseCase')
-		->exclude(__DIR__.'/../../UseCase/**/*DTO.php')
-	;
-	
-	$services->load($namespace.'\DataFixtures\\', __DIR__.'/../../DataFixtures')
-		->exclude(__DIR__.'/../../DataFixtures/**/*DTO.php')
-		->exclude(__DIR__.'/../../DataFixtures/**/*regions.php')
-	;
+    $services->load($namespace.'\Controller\\', __DIR__.'/../../Controller')
+        ->tag('controller.service_arguments')
+        ->exclude(__DIR__.'/../../Controller/**/*Test.php');
+
 };
 

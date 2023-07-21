@@ -29,6 +29,8 @@ use BaksDev\Core\Type\UidType\Uid;
 
 final class RegionEventUid extends Uid
 {
-	public const TYPE = 'region_event_uid';
+    public const TEST = '0188a9a4-168d-7f62-8d01-957a1620b287';
+    
+	public const TYPE = 'region_event';
 	
 }

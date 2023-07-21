@@ -30,7 +30,9 @@ use Symfony\Component\Uid\AbstractUid;
 
 final class RegionUid extends Uid
 {
-	public const TYPE = 'region_uid';
+    public const TEST = '0188a9a4-327e-7695-8ecb-148619cb37e2';
+    
+	public const TYPE = 'region';
 	
 	private ?string $option;
 	
