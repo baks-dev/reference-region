@@ -1,0 +1,13 @@
+ROLE_REGION:
+  name: 'Library of Regions'
+  desc: 'List of regions'
+
+
+ROLE_REGION_NEW:
+  name: 'Add'
+
+ROLE_REGION_EDIT:
+  name: 'Edit'
+
+ROLE_REGION_DELETE:
+  name: 'Delete'

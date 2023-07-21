@@ -1,0 +1,18 @@
+
+# Роль
+ROLE_REGION:
+  name: 'Библиотека регионов'
+  desc: 'Список регионов'
+
+# Правила
+
+ROLE_REGION_NEW:
+  name: 'Добавить'
+
+ROLE_REGION_EDIT:
+  name: 'Редактировать'
+
+ROLE_REGION_DELETE:
+  name: 'Удалить'
+
+
