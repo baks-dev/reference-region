@@ -23,9 +23,8 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Form;
+namespace BaksDev\Reference\Region\Form\RegionField;
 
-use BaksDev\Field\Tire\Profile\Type\TireProfileField;
 use Symfony\Component\Form\DataTransformerInterface;
 
 final class RegionFieldTransformer implements DataTransformerInterface

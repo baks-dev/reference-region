@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace BaksDev\Reference\Region\Security;
 
 
-use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\MenuGroupSettings;
 use BaksDev\Users\Groups\Group\DataFixtures\Security\RoleFixturesInterface;
@@ -34,7 +33,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('baks.security.role')]
 #[AutoconfigureTag('baks.menu.admin')]
-class Role implements RoleFixturesInterface, MenuAdminInterface
+class Role implements RoleFixturesInterface //, MenuAdminInterface
 {
     public const ROLE = 'ROLE_REGION';
 

@@ -34,11 +34,10 @@ return static function (ContainerConfigurator $configurator)
 	$namespace = 'BaksDev\Reference\Region';
 
     $services->load($namespace.'\\', __DIR__.'/../../')
-        ->exclude(__DIR__.'/../../{Controller,Entity,Resources,Type,Tests,*DTO.php,*Message.php, regions.php}');
+        ->exclude(__DIR__.'/../../{Controller,Entity,Resources,Type,Tests,*DTO.php,*Message.php,*regions.php}');
 
     $services->load($namespace.'\Controller\\', __DIR__.'/../../Controller')
         ->tag('controller.service_arguments')
         ->exclude(__DIR__.'/../../Controller/**/*Test.php');
 
 };
-

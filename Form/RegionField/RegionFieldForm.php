@@ -23,11 +23,10 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Form;
+namespace BaksDev\Reference\Region\Form\RegionField;
 
 use BaksDev\Field\Tire\Profile\Type\TireProfileField;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
