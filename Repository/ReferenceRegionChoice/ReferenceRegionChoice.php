@@ -25,69 +25,61 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Repository\ReferenceRegionChoice;
 
+use BaksDev\Core\Doctrine\ORMQueryBuilder;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Reference\Region\Entity as RegionEntity;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ReferenceRegionChoice implements ReferenceRegionChoiceInterface
 {
-	private EntityManagerInterface $entityManager;
-	
-	private TranslatorInterface $translator;
-	
-	
-	public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
-	{
-		$this->entityManager = $entityManager;
-		$this->translator = $translator;
-	}
-	
-	
-	public function getRegionChoice()
-	{
-		$qb = $this->entityManager->createQueryBuilder();
-		
-		//$qb->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
-		
-		$select = sprintf('new %s(region.id, region_trans.name)', RegionUid::class);
-		$qb->select($select);
-		
-		$qb->from(RegionEntity\Region::class, 'region');
-		
-		$qb->join(RegionEntity\Event\RegionEvent::class,
-			'region_event',
-			'WITH',
-			'region_event.id = region.event AND region_event.active = true'
-		);
-		
-		$qb->leftJoin(RegionEntity\Trans\RegionTrans::class,
-			'region_trans',
-			'WITH',
-			'region_trans.event = region_event.id AND region_trans.local = :local'
-		);
-		
-		$qb->orderBy('region_event.sort');
-		$qb->addOrderBy('region_trans.name');
-		
-		//return $qb->getQuery()->getResult();
-		
-		
-		$cacheQueries = new FilesystemAdapter('ReferenceRegion');
-	
-		/* Кешируем результат ORM */
-		$query = $this->entityManager->createQuery($qb->getDQL());
-		$query->setQueryCache($cacheQueries);
-		$query->setResultCache($cacheQueries);
-		$query->enableResultCache();
-		$query->setLifetime((60 * 60 * 24 * 30));
-		
-		$query->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
-		
-		return $query->getResult();
-		
-	}
-	
+
+    private TranslatorInterface $translator;
+    private ORMQueryBuilder $ORMQueryBuilder;
+
+
+    public function __construct(
+        ORMQueryBuilder $ORMQueryBuilder,
+        TranslatorInterface $translator
+    )
+    {
+
+        $this->translator = $translator;
+        $this->ORMQueryBuilder = $ORMQueryBuilder;
+    }
+
+
+    public function getRegionChoice()
+    {
+        $qb = $this->ORMQueryBuilder->createQueryBuilder(self::class);
+
+        //$qb->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
+
+        $select = sprintf('new %s(region.id, region_trans.name)', RegionUid::class);
+        $qb->select($select);
+
+        $qb->from(RegionEntity\Region::class, 'region');
+
+        $qb->join(RegionEntity\Event\RegionEvent::class,
+            'region_event',
+            'WITH',
+            'region_event.id = region.event AND region_event.active = true'
+        );
+
+        $qb->leftJoin(RegionEntity\Trans\RegionTrans::class,
+            'region_trans',
+            'WITH',
+            'region_trans.event = region_event.id AND region_trans.local = :local'
+        );
+
+        $qb->orderBy('region_event.sort');
+        $qb->addOrderBy('region_trans.name');
+
+        $qb->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
+
+
+        /* Кешируем результат ORM */
+        return $qb->enableCache('ReferenceRegion', 86400)->getResult();
+    }
+
 }

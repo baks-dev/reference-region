@@ -34,12 +34,13 @@ return static function(ContainerConfigurator $container, DoctrineConfig $doctrin
 	$doctrine->dbal()->type(RegionUid::TYPE)->class(RegionType::class);
 	$doctrine->dbal()->type(RegionEventUid::TYPE)->class(RegionEventType::class);
 
-	$emDefault = $doctrine->orm()->entityManager('default');
+    $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
 
-	$emDefault->autoMapping(true);
-	$emDefault->mapping('ReferenceRegion')
+    $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
+
+    $emDefault->mapping('ReferenceRegion')
 		->type('attribute')
-		->dir(__DIR__.'/../../Entity')
+		->dir($MODULE.'Entity')
 		->isBundle(false)
 		->prefix('BaksDev\Contacts\Region\Entity')
 		->alias('ReferenceRegion')
