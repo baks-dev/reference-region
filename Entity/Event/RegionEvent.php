@@ -25,19 +25,16 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Entity\Event;
 
+use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Core\Type\Modify\ModifyAction;
-use BaksDev\Core\Type\Modify\ModifyActionEnum;
 use BaksDev\Reference\Region\Entity\Modify\RegionModify;
 use BaksDev\Reference\Region\Entity\Region;
 use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
-use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Entity\EntityState;
+use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
 /* RegionEvent */
@@ -80,15 +77,15 @@ class RegionEvent extends EntityEvent
 		$this->modify = new RegionModify($this);
 		
 	}
-	
-	
+
+
 	public function __clone()
 	{
-		$this->id = new RegionEventUid();
+        $this->id = clone $this->id;
 	}
 	
 	
-	public function __toString() : string
+	public function __toString(): string
 	{
 		return (string) $this->id;
 	}
@@ -112,8 +109,10 @@ class RegionEvent extends EntityEvent
 	}
 	
 	
-	public function getDto($dto) : mixed
+	public function getDto($dto): mixed
 	{
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
 		if($dto instanceof RegionEventInterface)
 		{
 			return parent::getDto($dto);
@@ -123,26 +122,15 @@ class RegionEvent extends EntityEvent
 	}
 	
 	
-	public function setEntity($dto) : mixed
+	public function setEntity($dto): mixed
 	{
-		if($dto instanceof RegionEventInterface)
+		if($dto instanceof RegionEventInterface || $dto instanceof self)
 		{
 			return parent::setEntity($dto);
 		}
 		
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
-	
-	
-	//	public function isModifyActionEquals(ModifyActionEnum $action) : bool
-	//	{
-	//		return $this->modify->equals($action);
-	//	}
-	
-	//	public function getUploadClass() : RegionImage
-	//	{
-	//		return $this->image ?: $this->image = new RegionImage($this);
-	//	}
 	
 	public function getNameByLocale(Locale $locale) : ?string
 	{

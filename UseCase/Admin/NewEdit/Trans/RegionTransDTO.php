@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Reference\Region\UseCase\Admin\NewEdit\Trans;
 
 use BaksDev\Reference\Region\Entity\Trans\RegionTransInterface;
+use ReflectionProperty;
 use Symfony\Component\Validator\Constraints as Assert;
 use BaksDev\Core\Type\Locale\Locale;
 
@@ -53,7 +54,7 @@ final class RegionTransDTO implements RegionTransInterface
 	
 	public function setLocal(Locale $local) : void
 	{
-		if(!(new \ReflectionProperty($this::class, 'local'))->isInitialized($this))
+		if(!(new ReflectionProperty(self::class, 'local'))->isInitialized($this))
 		{
 			$this->local = $local;
 		}
@@ -62,7 +63,7 @@ final class RegionTransDTO implements RegionTransInterface
 	
 	/** Название продукта  */
 	
-	public function getName() : string
+	public function getName(): string
 	{
 		return $this->name;
 	}

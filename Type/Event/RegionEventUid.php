@@ -25,12 +25,14 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Type\Event;
 
+use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
+use Symfony\Component\Uid\AbstractUid;
 
 final class RegionEventUid extends Uid
 {
     public const TEST = '0188a9a4-168d-7f62-8d01-957a1620b287';
     
 	public const TYPE = 'region_event';
-	
+
 }

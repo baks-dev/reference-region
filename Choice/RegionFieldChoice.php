@@ -38,7 +38,7 @@ final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceI
 		return $key === RegionUid::TYPE;
 	}
 	
-	public function type() : string
+	public function type(): string
 	{
 		return RegionUid::TYPE;
 	}
@@ -49,14 +49,14 @@ final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceI
     }
 
 
-    public function domain() : string
+    public function domain(): string
 	{
 		return 'reference.region';
 	}
 	
 	
 	/** Возвращает класс формы для рендера */
-	public function form() : string
+	public function form(): string
 	{
 		return RegionFieldForm::class;
 	}

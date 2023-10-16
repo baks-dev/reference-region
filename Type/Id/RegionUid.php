@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Type\Id;
 
+use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
 use Symfony\Component\Uid\AbstractUid;
 
@@ -35,11 +36,11 @@ final class RegionUid extends Uid
 	public const TYPE = 'region';
 	
 	private ?string $option;
-	
-	
+
+
 	public function __construct(AbstractUid|string|null $value = null, string $option = null)
 	{
-		parent::__construct($value);
+        parent::__construct($value);
 		
 		$this->option = $option;
 	}
