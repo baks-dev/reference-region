@@ -49,7 +49,7 @@ final class Role implements RoleInterface //, MenuAdminInterface
     /** Метод возвращает PATH раздела */
     public function getPath(): string
     {
-        return 'ReferenceRegion:admin.index';
+        return 'reference-region:admin.index';
     }
 
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */

@@ -38,12 +38,12 @@ return static function(ContainerConfigurator $container, DoctrineConfig $doctrin
 
     $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
 
-    $emDefault->mapping('ReferenceRegion')
+    $emDefault->mapping('reference-region')
 		->type('attribute')
 		->dir($MODULE.'Entity')
 		->isBundle(false)
 		->prefix('BaksDev\Contacts\Region\Entity')
-		->alias('ReferenceRegion')
+		->alias('reference-region')
 	;
 
 };
