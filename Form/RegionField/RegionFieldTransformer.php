@@ -30,7 +30,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 final class RegionFieldTransformer implements DataTransformerInterface
 {
 	
-	public function transform(mixed $value)
+	public function transform(mixed $value) : mixed
 	{
 		//if(empty($value)) { return null; }
 		//return new TireProfileField((int) $value);

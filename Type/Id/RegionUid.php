@@ -38,7 +38,9 @@ final class RegionUid extends Uid
 	private ?string $option;
 
 
-	public function __construct(AbstractUid|string|null $value = null, string $option = null)
+	public function __construct(
+        AbstractUid|self|string|null $value = null,
+        mixed $option = null)
 	{
         parent::__construct($value);
 		
