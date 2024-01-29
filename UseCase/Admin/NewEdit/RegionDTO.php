@@ -28,12 +28,17 @@ namespace BaksDev\Reference\Region\UseCase\Admin\NewEdit;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Reference\Region\Entity\Event\RegionEventInterface;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class RegionDTO implements RegionEventInterface
 {
-	
+
+    /** Идентификатор региона */
+    #[Assert\Uuid]
+    private ?RegionUid $region = null;
+
 	/** Идентификатор события */
 	#[Assert\Uuid]
 	private ?RegionEventUid $id = null;
@@ -57,10 +62,38 @@ final class RegionDTO implements RegionEventInterface
 	{
 		return $this->id;
 	}
-	
-	
-	
-	/** Перевод */
+
+
+    /**
+     * Id
+     */
+    public function getId(): ?RegionEventUid
+    {
+        return $this->id;
+    }
+
+    public function setId(?RegionEventUid $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Region
+     */
+    public function getRegion(): ?RegionUid
+    {
+        return $this->region;
+    }
+
+    public function withRegion(?RegionUid $region): self
+    {
+        $this->region = $region;
+        return $this;
+    }
+
+
+    /** Перевод */
 	
 	public function setTranslate(ArrayCollection $trans) : void
 	{

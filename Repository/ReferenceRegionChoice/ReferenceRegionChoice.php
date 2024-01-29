@@ -79,7 +79,9 @@ final class ReferenceRegionChoice implements ReferenceRegionChoiceInterface
 
 
         /* Кешируем результат ORM */
-        return $qb->enableCache('reference-region', 86400)->getResult();
+        return $qb
+            //->enableCache('reference-region', 86400)
+            ->getResult();
     }
 
 }

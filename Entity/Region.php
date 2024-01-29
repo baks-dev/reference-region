@@ -48,13 +48,17 @@ class Region
 	/** ID События */
 	#[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
 	private RegionEventUid $event;
-	
-	
-	
+
 	public function __construct()
 	{
 		$this->id = new RegionUid();
 	}
+
+    public function setRegion(RegionUid $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
 	
 	
 	public function getId() : RegionUid
