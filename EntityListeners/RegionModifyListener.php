@@ -26,9 +26,11 @@ namespace BaksDev\Reference\Region\EntityListeners;
 
 use BaksDev\Core\Type\Ip\IpAddress;
 use BaksDev\Reference\Region\Entity\Modify\RegionModify;
+use BaksDev\Users\User\Entity\User;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 
 final class RegionModifyListener
 {
@@ -47,10 +49,17 @@ final class RegionModifyListener
     public function prePersist(RegionModify $data, LifecycleEventArgs $event) : void
     {
         $token = $this->token->getToken();
-        
-        if($token)
-        {
+
+        if ($token) {
+
             $data->setUsr($token->getUser());
+
+            if($token instanceof SwitchUserToken)
+            {
+                /** @var User $originalUser */
+                $originalUser = $token->getOriginalToken()->getUser();
+                $data->setUsr($originalUser);
+            }
         }
         
         /* Если пользователь не из консоли */
