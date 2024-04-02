@@ -31,7 +31,7 @@ use BaksDev\Reference\Region\Entity as RegionEntity;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ReferenceRegionChoice implements ReferenceRegionChoiceInterface
+final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInterface
 {
 
     private TranslatorInterface $translator;

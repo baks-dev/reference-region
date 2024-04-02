@@ -1,6 +1,6 @@
 # BaksDev Reference Region
 
-[![Version](https://img.shields.io/badge/version-7.0.5-blue)](https://github.com/baks-dev/reference-region/releases)
+[![Version](https://img.shields.io/badge/version-7.0.6-blue)](https://github.com/baks-dev/reference-region/releases)
 ![php 8.2+](https://img.shields.io/badge/php-min%208.1-red.svg)
 
 Библиотека регионов

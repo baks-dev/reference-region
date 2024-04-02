@@ -56,11 +56,11 @@ class RegionEvent extends EntityEvent
 	private ?RegionUid $region = null;
 	
 	/** Модификатор */
-	#[ORM\OneToOne(mappedBy: 'event', targetEntity: RegionModify::class, cascade: ['all'])]
+	#[ORM\OneToOne(targetEntity: RegionModify::class, mappedBy: 'event', cascade: ['all'])]
 	private RegionModify $modify;
 	
 	/** Перевод */
-	#[ORM\OneToMany(mappedBy: 'event', targetEntity: RegionTrans::class, cascade: ['all'])]
+	#[ORM\OneToMany(targetEntity: RegionTrans::class, mappedBy: 'event', cascade: ['all'])]
 	private Collection $translate;
 	
 	/** Сортировка */
