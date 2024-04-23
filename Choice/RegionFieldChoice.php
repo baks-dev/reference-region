@@ -27,7 +27,6 @@ namespace BaksDev\Reference\Region\Choice;
 
 use BaksDev\Core\Services\Fields\FieldsChoiceInterface;
 use BaksDev\Core\Services\Reference\ReferenceChoiceInterface;
-use BaksDev\Reference\Region\Form\RegionFieldForm;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 
 final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceInterface
@@ -60,5 +59,9 @@ final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceI
 	{
 		return RegionFieldForm::class;
 	}
-	
+
+    public function constraints(): ?array
+    {
+        return null;
+    }
 }
