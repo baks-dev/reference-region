@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,18 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (ContainerConfigurator $configurator)
-{
-    $services = $configurator->services()
-      ->defaults()
-      ->autowire()
-      ->autoconfigure()
-    ;
+use BaksDev\Reference\Region\BaksDevReferenceRegionBundle;
+use Symfony\Config\TwigConfig;
 
-	$NAMESPACE = 'BaksDev\Reference\Region\\';
+return static function(TwigConfig $twig) {
 
-    $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
-
-    $services->load($NAMESPACE, $MODULE)
-        ->exclude([
-            $MODULE.'{Entity,Resources,Type}',
-            $MODULE.'**/*Message.php',
-            $MODULE.'**/*DTO.php',
-            $MODULE.'**/regions.php',
-        ])
-    ;
+    $twig->path(
+        BaksDevReferenceRegionBundle::PATH.'Resources/view',
+        'reference-region'
+    );
 
 };
+
+
+
+

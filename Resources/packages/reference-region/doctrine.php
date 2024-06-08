@@ -23,12 +23,27 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfony\Config\TwigConfig;
+use BaksDev\Reference\Region\BaksDevReferenceRegionBundle;
+use BaksDev\Reference\Region\Type\Event\RegionEventType;
+use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Reference\Region\Type\Id\RegionType;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
+use Symfony\Config\DoctrineConfig;
 
-return static function(TwigConfig $config) {
-    $config->path(__DIR__.'/../view', 'reference-region');
+return static function(ContainerConfigurator $container, DoctrineConfig $doctrine) {
+	
+	$doctrine->dbal()->type(RegionUid::TYPE)->class(RegionType::class);
+	$doctrine->dbal()->type(RegionEventUid::TYPE)->class(RegionEventType::class);
+
+    $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
+
+
+    $emDefault->mapping('reference-region')
+		->type('attribute')
+		->dir(BaksDevReferenceRegionBundle::PATH.'Entity')
+		->isBundle(false)
+		->prefix('BaksDev\Contacts\Region\Entity')
+		->alias('reference-region')
+	;
+
 };
-
-
-
-

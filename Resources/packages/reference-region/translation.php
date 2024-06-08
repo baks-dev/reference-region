@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,14 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Reference\Region\Type\Event\RegionEventType;
-use BaksDev\Reference\Region\Type\Event\RegionEventUid;
-use BaksDev\Reference\Region\Type\Id\RegionType;
-use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Symfony\Config\DoctrineConfig;
+use BaksDev\Reference\Region\BaksDevReferenceRegionBundle;
+use Symfony\Config\FrameworkConfig;
 
-return static function(ContainerConfigurator $container, DoctrineConfig $doctrine) {
-	
-	$doctrine->dbal()->type(RegionUid::TYPE)->class(RegionType::class);
-	$doctrine->dbal()->type(RegionEventUid::TYPE)->class(RegionEventType::class);
-
-    $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
-
-    $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
-
-    $emDefault->mapping('reference-region')
-		->type('attribute')
-		->dir($MODULE.'Entity')
-		->isBundle(false)
-		->prefix('BaksDev\Contacts\Region\Entity')
-		->alias('reference-region')
-	;
-
+return static function(FrameworkConfig $config) {
+    $config
+        ->translator()
+        ->paths([BaksDevReferenceRegionBundle::PATH.'Resources/translations/']);
 };
+
+
+
