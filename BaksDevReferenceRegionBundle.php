@@ -36,11 +36,8 @@ class BaksDevReferenceRegionBundle extends AbstractBundle
                 self::PATH.'{Entity,Resources,Type}',
                 self::PATH.'**/*Message.php',
                 self::PATH.'**/*DTO.php',
+                self::PATH.'**/regions.php',
             ]);
-
-//        $path = self::PATH.'Resources/packages/reference-region/services.php';
-//        $container->import($path);
-
 
     }
 	
