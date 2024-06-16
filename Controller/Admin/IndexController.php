@@ -38,27 +38,28 @@ use Symfony\Component\Routing\Annotation\Route;
 #[RoleSecurity(['ROLE_ADMIN', 'ROLE_REGION'])]
 final class IndexController extends AbstractController
 {
-	#[Route('/admin/regions/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
-	public function index(
-		Request $request,
-		//AllContactsRegionInterface $allContactsRegion,
-		int $page = 0,
-	) : Response {
-		
-		dd('Reference Region');
-		
-		/* Поиск */
-		$search = new SearchDTO();
-		$searchForm = $this->createForm(SearchForm::class, $search);
-		$searchForm->handleRequest($request);
-		
-		/* Получаем список */
-		$contacts = $allContactsRegion->fetchAllContactsRegionAssociative($search);
-		
-		return $this->render(
-			[
-				'query' => $contacts,
-				'search' => $searchForm->createView(),
-			]); 
-	}
+    #[Route('/admin/regions/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
+    public function index(
+        Request $request,
+        //AllContactsRegionInterface $allContactsRegion,
+        int $page = 0,
+    ): Response {
+
+        dd('Reference Region');
+
+        /* Поиск */
+        $search = new SearchDTO();
+        $searchForm = $this->createForm(SearchForm::class, $search);
+        $searchForm->handleRequest($request);
+
+        /* Получаем список */
+        $contacts = $allContactsRegion->fetchAllContactsRegionAssociative($search);
+
+        return $this->render(
+            [
+                'query' => $contacts,
+                'search' => $searchForm->createView(),
+            ]
+        );
+    }
 }

@@ -27,5 +27,4 @@ namespace BaksDev\Reference\Region\Security;
 
 final class VoterDelete
 {
-
 }

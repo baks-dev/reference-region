@@ -28,8 +28,8 @@ namespace BaksDev\Reference\Region\Entity;
 use BaksDev\Reference\Region\Entity\Event\RegionEvent;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 /* Region */
 
@@ -38,44 +38,44 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Table(name: 'region')]
 class Region
 {
-	public const TABLE = 'region';
-	
-	/** ID */
-	#[ORM\Id]
-	#[ORM\Column(type: RegionUid::TYPE)]
-	private RegionUid $id;
-	
-	/** ID События */
-	#[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
-	private RegionEventUid $event;
+    public const TABLE = 'region';
 
-	public function __construct()
-	{
-		$this->id = new RegionUid();
-	}
+    /** ID */
+    #[ORM\Id]
+    #[ORM\Column(type: RegionUid::TYPE)]
+    private RegionUid $id;
+
+    /** ID События */
+    #[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
+    private RegionEventUid $event;
+
+    public function __construct()
+    {
+        $this->id = new RegionUid();
+    }
 
     public function setRegion(RegionUid $id): self
     {
         $this->id = $id;
         return $this;
     }
-	
-	
-	public function getId() : RegionUid
-	{
-		return $this->id;
-	}
-	
-	
-	public function getEvent() : RegionEventUid
-	{
-		return $this->event;
-	}
-	
-	
-	public function setEvent(RegionEventUid|RegionEvent $event) : void
-	{
-		$this->event = $event instanceof RegionEvent ? $event->getId() : $event;
-	}
-	
+
+
+    public function getId(): RegionUid
+    {
+        return $this->id;
+    }
+
+
+    public function getEvent(): RegionEventUid
+    {
+        return $this->event;
+    }
+
+
+    public function setEvent(RegionEventUid|RegionEvent $event): void
+    {
+        $this->event = $event instanceof RegionEvent ? $event->getId() : $event;
+    }
+
 }

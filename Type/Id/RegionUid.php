@@ -32,25 +32,25 @@ use Symfony\Component\Uid\AbstractUid;
 final class RegionUid extends Uid
 {
     public const TEST = '0188a9a4-327e-7695-8ecb-148619cb37e2';
-    
-	public const TYPE = 'region';
-	
-	private ?string $option;
+
+    public const TYPE = 'region';
+
+    private ?string $option;
 
 
-	public function __construct(
+    public function __construct(
         AbstractUid|self|string|null $value = null,
-        mixed $option = null)
-	{
+        mixed $option = null
+    ) {
         parent::__construct($value);
-		
-		$this->option = $option;
-	}
-	
-	
-	public function getOption() : ?string
-	{
-		return $this->option;
-	}
-	
+
+        $this->option = $option;
+    }
+
+
+    public function getOption(): ?string
+    {
+        return $this->option;
+    }
+
 }

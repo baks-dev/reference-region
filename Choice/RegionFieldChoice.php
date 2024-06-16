@@ -31,16 +31,15 @@ use BaksDev\Reference\Region\Type\Id\RegionUid;
 
 final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceInterface
 {
-	
-	public function equals($key) : bool
-	{
-		return $key === RegionUid::TYPE;
-	}
-	
-	public function type(): string
-	{
-		return RegionUid::TYPE;
-	}
+    public function equals($key): bool
+    {
+        return $key === RegionUid::TYPE;
+    }
+
+    public function type(): string
+    {
+        return RegionUid::TYPE;
+    }
 
     public function class(): string
     {
@@ -49,16 +48,16 @@ final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceI
 
 
     public function domain(): string
-	{
-		return 'reference.region';
-	}
-	
-	
-	/** Возвращает класс формы для рендера */
-	public function form(): string
-	{
-		return RegionFieldForm::class;
-	}
+    {
+        return 'reference.region';
+    }
+
+
+    /** Возвращает класс формы для рендера */
+    public function form(): string
+    {
+        return RegionFieldForm::class;
+    }
 
     public function constraints(): ?array
     {

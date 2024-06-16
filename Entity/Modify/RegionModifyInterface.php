@@ -27,6 +27,6 @@ use BaksDev\Core\Type\Modify\ModifyAction;
 
 interface RegionModifyInterface
 {
-	public function getAction() : ModifyAction;
-	
+    public function getAction(): ModifyAction;
+
 }

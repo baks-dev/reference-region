@@ -33,7 +33,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInterface
 {
-
     private TranslatorInterface $translator;
     private ORMQueryBuilder $ORMQueryBuilder;
 
@@ -41,8 +40,7 @@ final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInte
     public function __construct(
         ORMQueryBuilder $ORMQueryBuilder,
         TranslatorInterface $translator
-    )
-    {
+    ) {
 
         $this->translator = $translator;
         $this->ORMQueryBuilder = $ORMQueryBuilder;
@@ -60,13 +58,15 @@ final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInte
 
         $qb->from(RegionEntity\Region::class, 'region');
 
-        $qb->join(RegionEntity\Event\RegionEvent::class,
+        $qb->join(
+            RegionEntity\Event\RegionEvent::class,
             'region_event',
             'WITH',
             'region_event.id = region.event AND region_event.active = true'
         );
 
-        $qb->leftJoin(RegionEntity\Trans\RegionTrans::class,
+        $qb->leftJoin(
+            RegionEntity\Trans\RegionTrans::class,
             'region_trans',
             'WITH',
             'region_trans.event = region_event.id AND region_trans.local = :local'

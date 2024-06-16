@@ -29,15 +29,15 @@ use BaksDev\Core\Type\UidType\UidType;
 
 final class RegionType extends UidType
 {
-	public function getClassType(): string
-	{
-		return RegionUid::class;
-	}
-	
-	
-	public function getName(): string
-	{
-		return RegionUid::TYPE;
-	}
-	
+    public function getClassType(): string
+    {
+        return RegionUid::class;
+    }
+
+
+    public function getName(): string
+    {
+        return RegionUid::TYPE;
+    }
+
 }

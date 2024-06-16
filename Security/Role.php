@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Security;
 
-
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\MenuGroupSettings;
 use BaksDev\Users\Profile\Group\Security\RoleInterface;

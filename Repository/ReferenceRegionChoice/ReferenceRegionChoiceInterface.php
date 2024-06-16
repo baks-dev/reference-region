@@ -25,6 +25,6 @@ namespace BaksDev\Reference\Region\Repository\ReferenceRegionChoice;
 
 interface ReferenceRegionChoiceInterface
 {
-	public function getRegionChoice();
-	
+    public function getRegionChoice();
+
 }

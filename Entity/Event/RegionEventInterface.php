@@ -27,6 +27,6 @@ use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 
 interface RegionEventInterface
 {
-	public function getEvent() : ?RegionEventUid;
-	
+    public function getEvent(): ?RegionEventUid;
+
 }

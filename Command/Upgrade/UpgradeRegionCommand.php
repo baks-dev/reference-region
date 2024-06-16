@@ -45,15 +45,13 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeRegionCommand extends Command implements ProjectUpgradeInterface
 {
-
     private DBALQueryBuilder $DBALQueryBuilder;
     private RegionHandler $handler;
 
     public function __construct(
         DBALQueryBuilder $DBALQueryBuilder,
         RegionHandler $handler
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->DBALQueryBuilder = $DBALQueryBuilder;

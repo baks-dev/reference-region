@@ -32,7 +32,7 @@ use DomainException;
 
 final class RegionHandler extends AbstractHandler
 {
-    public function handle(RegionDTO $command) : string|Region
+    public function handle(RegionDTO $command): string|Region
     {
 
         /** Валидация DTO  */
@@ -63,16 +63,14 @@ final class RegionHandler extends AbstractHandler
 
         $this->entityManager->flush();
 
-//        /* Отправляем сообщение в шину */
-//        $this->messageDispatch->dispatch(
-//            message: new ProductSignMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-//            transport: 'products-sign'
-//        );
+        //        /* Отправляем сообщение в шину */
+        //        $this->messageDispatch->dispatch(
+        //            message: new ProductSignMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
+        //            transport: 'products-sign'
+        //        );
 
         return $this->main;
     }
-
-
 
 
 }

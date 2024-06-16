@@ -34,34 +34,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class RegionDTO implements RegionEventInterface
 {
-
     /** Идентификатор региона */
     #[Assert\Uuid]
     private ?RegionUid $region = null;
 
-	/** Идентификатор события */
-	#[Assert\Uuid]
-	private ?RegionEventUid $id = null;
-	
-	/** Сортировка */
-	private int $sort = 500;
-	
-	/** Флаг активности */
-	private bool $active = true;
-	
-	/** Перевод */
-	#[Assert\Valid]
-	private ArrayCollection $translate;
-	
-	public function __construct()
-	{
-		$this->translate = new ArrayCollection();
-	}
-	
-	public function getEvent() : ?RegionEventUid
-	{
-		return $this->id;
-	}
+    /** Идентификатор события */
+    #[Assert\Uuid]
+    private ?RegionEventUid $id = null;
+
+    /** Сортировка */
+    private int $sort = 500;
+
+    /** Флаг активности */
+    private bool $active = true;
+
+    /** Перевод */
+    #[Assert\Valid]
+    private ArrayCollection $translate;
+
+    public function __construct()
+    {
+        $this->translate = new ArrayCollection();
+    }
+
+    public function getEvent(): ?RegionEventUid
+    {
+        return $this->id;
+    }
 
 
     /**
@@ -94,81 +93,73 @@ final class RegionDTO implements RegionEventInterface
 
 
     /** Перевод */
-	
-	public function setTranslate(ArrayCollection $trans) : void
-	{
-		$this->translate = $trans;
-	}
-	
-	
-	public function getTranslate() : ArrayCollection
-	{
-		/* Вычисляем расхождение и добавляем неопределенные локали */
-		foreach(Locale::diffLocale($this->translate) as $locale)
-		{
-			$RegionTransDTO = new Trans\RegionTransDTO;
-			$RegionTransDTO->setLocal($locale);
-			$this->addTranslate($RegionTransDTO);
-		}
-		
-		return $this->translate;
-	}
-	
-	
-	public function addTranslate(Trans\RegionTransDTO $trans) : void
-	{
+
+    public function setTranslate(ArrayCollection $trans): void
+    {
+        $this->translate = $trans;
+    }
+
+
+    public function getTranslate(): ArrayCollection
+    {
+        /* Вычисляем расхождение и добавляем неопределенные локали */
+        foreach(Locale::diffLocale($this->translate) as $locale)
+        {
+            $RegionTransDTO = new Trans\RegionTransDTO();
+            $RegionTransDTO->setLocal($locale);
+            $this->addTranslate($RegionTransDTO);
+        }
+
+        return $this->translate;
+    }
+
+
+    public function addTranslate(Trans\RegionTransDTO $trans): void
+    {
         if(empty($trans->getLocal()->getLocalValue()))
         {
             return;
         }
 
-		if(!$this->translate->contains($trans))
-		{
-			$this->translate->add($trans);
-		}
-	}
-	
-	
-	public function removeTranslate(Trans\RegionTransDTO $trans) : void
-	{
-		$this->translate->removeElement($trans);
-	}
-	
-	
-	/** Сортировка */
-	
-	public function getSort() : int
-	{
-		return $this->sort;
-	}
-	
-	public function setSort(int $sort) : void
-	{
-		$this->sort = $sort;
-	}
-	
-	
-	/** Флаг активности */
-	
-	
-	public function isActive() : bool
-	{
-		return $this->active;
-	}
-	
+        if(!$this->translate->contains($trans))
+        {
+            $this->translate->add($trans);
+        }
+    }
 
-	public function setActive(bool $active) : void
-	{
-		$this->active = $active;
-	}
-	
-	
-	
-	
-	
-	
 
-	
+    public function removeTranslate(Trans\RegionTransDTO $trans): void
+    {
+        $this->translate->removeElement($trans);
+    }
 
-	
+
+    /** Сортировка */
+
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+
+    /** Флаг активности */
+
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+
 }

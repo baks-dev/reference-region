@@ -33,41 +33,40 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class RegionFieldForm extends AbstractType
 {
-	
-	private RegionFieldTransformer $transformer;
-	
-	
-	public function __construct(RegionFieldTransformer $transformer)
-	{
-		$this->transformer = $transformer;
-	}
-	
-	public function buildForm(FormBuilderInterface $builder, array $options) : void
-	{
-		$builder->addModelTransformer($this->transformer);
-	}
-	
-	
-	public function configureOptions(OptionsResolver $resolver) : void
-	{
-		$resolver->setDefaults([
-			'choices' => TireProfileField::cases(),
-			'choice_value' => function($status) {
-				return $status?->getValue();
-			},
-			'choice_label' => function($status) {
-				return $status->getValue();
-			},
-			'translation_domain' => 'reference.region',
-			'placeholder' => 'placeholder',
-			'attr' => [ 'data-select' => 'select2' ],
-		]);
-	}
-	
-	
-	public function getParent(): string
+    private RegionFieldTransformer $transformer;
+
+
+    public function __construct(RegionFieldTransformer $transformer)
     {
-		return ChoiceType::class;
-	}
-	
+        $this->transformer = $transformer;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->addModelTransformer($this->transformer);
+    }
+
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'choices' => TireProfileField::cases(),
+            'choice_value' => function ($status) {
+                return $status?->getValue();
+            },
+            'choice_label' => function ($status) {
+                return $status->getValue();
+            },
+            'translation_domain' => 'reference.region',
+            'placeholder' => 'placeholder',
+            'attr' => ['data-select' => 'select2'],
+        ]);
+    }
+
+
+    public function getParent(): string
+    {
+        return ChoiceType::class;
+    }
+
 }
