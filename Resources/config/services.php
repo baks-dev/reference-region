@@ -1,17 +1,17 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
- *
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *
+ *  
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *
+ *  
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,47 +21,27 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-namespace BaksDev\Reference\Region\Choice;
+use BaksDev\Reference\Region\BaksDevReferenceRegionBundle;
 
-use BaksDev\Core\Services\Fields\FieldsChoiceInterface;
-use BaksDev\Core\Services\Reference\ReferenceChoiceInterface;
-use BaksDev\Reference\Region\Form\RegionField\RegionFieldForm;
-use BaksDev\Reference\Region\Type\Id\RegionUid;
+return static function(ContainerConfigurator $configurator) {
+    $services = $configurator->services()
+        ->defaults()
+        ->autowire()
+        ->autoconfigure();
 
-final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceInterface
-{
-    public function equals($key): bool
-    {
-        return $key === RegionUid::TYPE;
-    }
+    $NAMESPACE = BaksDevReferenceRegionBundle::NAMESPACE;
+    $PATH = BaksDevReferenceRegionBundle::PATH;
 
-    public function type(): string
-    {
-        return RegionUid::TYPE;
-    }
+    $services->load($NAMESPACE, $PATH)
+        ->exclude([
+            $PATH.'{Entity,Resources,Type}',
+            $PATH.'**/*Message.php',
+            $PATH.'**/*DTO.php',
+            $PATH.'**/regions.php',
+        ]);
 
-    public function class(): string
-    {
-        return RegionUid::class;
-    }
+    $services->load($NAMESPACE.'Type\Regions\\', $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Regions', '']));
 
-
-    public function domain(): string
-    {
-        return 'reference-region.admin';
-    }
-
-
-    /** Возвращает класс формы для рендера */
-    public function form(): string
-    {
-        return RegionFieldForm::class;
-    }
-
-    public function constraints(): ?array
-    {
-        return null;
-    }
-}
+};

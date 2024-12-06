@@ -57,7 +57,7 @@ final class RegionFieldForm extends AbstractType
             'choice_label' => function ($status) {
                 return $status->getValue();
             },
-            'translation_domain' => 'reference.region',
+            'translation_domain' => 'reference-region.admin',
             'placeholder' => 'placeholder',
             'attr' => ['data-select' => 'select2'],
         ]);

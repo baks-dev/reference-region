@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,70 +23,72 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Entity\Trans;
+namespace BaksDev\Reference\Region\Entity\Invariable;
 
-use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Reference\Region\Entity\Event\RegionEvent;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/* Перевод RegionTrans */
 
+/* RegionInvariable */
 
 #[ORM\Entity]
-#[ORM\Table(name: 'region_trans')]
-#[ORM\Index(columns: ['name'])]
-class RegionTrans extends EntityEvent
+#[ORM\Table(name: 'region_invariable')]
+class RegionInvariable extends EntityReadonly
 {
-    /** Связь на событие */
+    /**
+     * Идентификатор Main
+     */
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: RegionEvent::class, inversedBy: "translate")]
-    #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
-    private readonly RegionEvent $event;
+    #[ORM\Column(type: RegionUid::TYPE)]
+    private RegionUid $main;
 
-    /** Локаль */
+    /**
+     * Идентификатор События
+     */
     #[Assert\NotBlank]
-    #[Assert\Length(max: 2)]
-    #[ORM\Id]
-    #[ORM\Column(type: Locale::TYPE)]
-    private readonly Locale $local;
+    #[Assert\Uuid]
+    #[ORM\OneToOne(targetEntity: RegionEvent::class, inversedBy: 'invariable')]
+    #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
+    private RegionEvent $event;
 
-    /** Название */
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
+    /** Флаг активности */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $active = true;
 
-    /** Описание */
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description;
+    /** Сортировка */
+    #[ORM\Column(type: Types::SMALLINT, length: 3, options: ['default' => 500])]
+    private int $sort = 500;
 
 
     public function __construct(RegionEvent $event)
     {
         $this->event = $event;
+        $this->main = $event->getMain();
     }
 
     public function __toString(): string
     {
-        return (string) $this->event;
+        return (string) $this->main;
     }
 
-    public function getEvent(): RegionEvent
+    public function setEvent(RegionEvent $event): self
     {
-        return $this->event;
+        $this->event = $event;
+        return $this;
     }
 
     public function getDto($dto): mixed
     {
         $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
 
-        if($dto instanceof RegionTransInterface)
+        if($dto instanceof RegionInvariableInterface)
         {
             return parent::getDto($dto);
         }
@@ -97,8 +99,7 @@ class RegionTrans extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-
-        if($dto instanceof RegionTransInterface)
+        if($dto instanceof RegionInvariableInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }
@@ -106,14 +107,4 @@ class RegionTrans extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
-
-    public function name(Locale $locale): ?string
-    {
-        if($this->local->getLocalValue() === $locale->getLocalValue())
-        {
-            return $this->name;
-        }
-
-        return null;
-    }
 }

@@ -1,0 +1,12 @@
+placeholder: 'Select a region from the list...'
+label: 'Region'
+
+# Belarus
+
+60d71f7e-24c2-75fb-ad24-ebed593c4966: 'Gomel'
+
+# Russia
+
+9d692dd5-feb6-7439-9cb9-2382a84554fd: 'Republic of Crimea'
+201042a6-c35d-7bc4-9cb9-ef8bc1c8711e: 'Moscow and Moscow region'
+73ca3091-7c43-719e-9cb9-be5b4d1ab444: 'Orenburg and Orenburg region'

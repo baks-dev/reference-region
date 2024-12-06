@@ -27,13 +27,13 @@ namespace BaksDev\Reference\Region\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Reference\Region\Entity\Invariable\RegionInvariable;
 use BaksDev\Reference\Region\Entity\Modify\RegionModify;
 use BaksDev\Reference\Region\Entity\Region;
 use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\Type\Event\RegionEventUid;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -44,8 +44,6 @@ use InvalidArgumentException;
 #[ORM\Table(name: 'region_event')]
 class RegionEvent extends EntityEvent
 {
-    public const TABLE = 'region_event';
-
     /** ID */
     #[ORM\Id]
     #[ORM\Column(type: RegionEventUid::TYPE)]
@@ -59,25 +57,19 @@ class RegionEvent extends EntityEvent
     #[ORM\OneToOne(targetEntity: RegionModify::class, mappedBy: 'event', cascade: ['all'])]
     private RegionModify $modify;
 
+    /** Модификатор */
+    #[ORM\OneToOne(targetEntity: RegionInvariable::class, mappedBy: 'event', cascade: ['all'])]
+    private RegionInvariable $invariable;
+
     /** Перевод */
     #[ORM\OneToMany(targetEntity: RegionTrans::class, mappedBy: 'event', cascade: ['all'])]
     private Collection $translate;
-
-    /** Сортировка */
-    #[ORM\Column(type: Types::SMALLINT, length: 3, options: ['default' => 500])]
-    private int $sort = 500;
-
-    /** Флаг активности */
-    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
-    private bool $active = true;
 
     public function __construct()
     {
         $this->id = new RegionEventUid();
         $this->modify = new RegionModify($this);
-
     }
-
 
     public function __clone()
     {

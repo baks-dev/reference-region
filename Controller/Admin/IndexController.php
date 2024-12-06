@@ -29,6 +29,7 @@ use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Form\Search\SearchForm;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
+use BaksDev\Reference\Region\Repository\AllRegions\AllRegionsInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -41,23 +42,25 @@ final class IndexController extends AbstractController
     #[Route('/admin/regions/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
     public function index(
         Request $request,
-        //AllContactsRegionInterface $allContactsRegion,
+        AllRegionsInterface $AllRegionsInterface,
         int $page = 0,
-    ): Response {
-
-        dd('Reference Region');
+    ): Response
+    {
 
         /* Поиск */
         $search = new SearchDTO();
-        $searchForm = $this->createForm(SearchForm::class, $search);
-        $searchForm->handleRequest($request);
+        $searchForm = $this
+            ->createForm(SearchForm::class, $search)
+            ->handleRequest($request);
 
         /* Получаем список */
-        $contacts = $allContactsRegion->fetchAllContactsRegionAssociative($search);
+        $region = $AllRegionsInterface
+            ->search($search)
+            ->findPaginator();
 
         return $this->render(
             [
-                'query' => $contacts,
+                'query' => $region,
                 'search' => $searchForm->createView(),
             ]
         );

@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,55 +23,46 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Entity;
+namespace BaksDev\Reference\Region\Type\Regions\Belarus;
 
-use BaksDev\Reference\Region\Entity\Event\RegionEvent;
-use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Field\Country\Type\Country\Belarus;
+use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Doctrine\ORM\Mapping as ORM;
+use BaksDev\Reference\Region\Type\Regions\RegionInterface;
 
-/* Region */
-
-#[ORM\Entity]
-#[ORM\Table(name: 'region')]
-class Region
+/**
+ * Гомель
+ */
+final class Homyel implements RegionInterface
 {
-    /** ID */
-    #[ORM\Id]
-    #[ORM\Column(type: RegionUid::TYPE)]
-    private RegionUid $id;
+    public const string TYPE = 'gm';
 
-    /** ID События */
-    #[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
-    private RegionEventUid $event;
+    public const string ID = '60d71f7e-24c2-75fb-ad24-ebed593c4966';
 
-    public function __construct()
+    public function __toString(): string
     {
-        $this->id = new RegionUid();
+        return self::TYPE;
     }
 
-    public function setRegion(RegionUid $id): self
+    public function country(): CountryInterface
     {
-        $this->id = $id;
-        return $this;
+        return new Belarus();
     }
 
-
-    public function getId(): RegionUid
+    public static function getRegionUid(): RegionUid
     {
-        return $this->id;
+        return new RegionUid(self::ID);
     }
 
-
-    public function getEvent(): RegionEventUid
+    public static function priority(): int
     {
-        return $this->event;
+        return 100;
     }
 
-
-    public function setEvent(RegionEventUid|RegionEvent $event): void
+    public static function equals(mixed $value): bool
     {
-        $this->event = $event instanceof RegionEvent ? $event->getId() : $event;
-    }
+        $value = (string) mb_strtolower($value);
 
+        return in_array($value, [self::TYPE, self::ID, 'homyel', 'gomel oblast', 'gomel region']);
+    }
 }

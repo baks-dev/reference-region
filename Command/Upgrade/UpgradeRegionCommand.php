@@ -26,8 +26,10 @@ namespace BaksDev\Reference\Region\Command\Upgrade;
 use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
 use BaksDev\Reference\Region\Entity\Region;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
+use BaksDev\Reference\Region\Type\Regions\RegionCollection;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionDTO;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionHandler;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\Trans\RegionTransDTO;
@@ -35,23 +37,31 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
     name: 'baks:reference-region:upgrade',
     description: 'Обновляет список регионов',
 )]
 #[AutoconfigureTag('baks.project.upgrade')]
-class UpgradeRegionCommand extends Command implements ProjectUpgradeInterface
+class UpgradeRegionCommand extends Command
 {
     private DBALQueryBuilder $DBALQueryBuilder;
     private RegionHandler $handler;
 
+
     public function __construct(
+        #[AutowireIterator('baks.country')] private readonly iterable $country,
+        private readonly RegionCollection $regions,
+        private readonly TranslatorInterface $translator,
         DBALQueryBuilder $DBALQueryBuilder,
         RegionHandler $handler
-    ) {
+    )
+    {
         parent::__construct();
 
         $this->DBALQueryBuilder = $DBALQueryBuilder;
@@ -62,6 +72,73 @@ class UpgradeRegionCommand extends Command implements ProjectUpgradeInterface
     {
         $io = new SymfonyStyle($input, $output);
         $io->text('Обновляем список регионов');
+
+        $helper = $this->getHelper('question');
+
+        $questions[] = 'Все';
+
+        /** @var CountryInterface $country */
+        foreach($this->country as $country)
+        {
+            $value = $country->getValue();
+            $questions[$value] = $this->translator->trans($value, domain: 'field-country');
+        }
+
+        $question = new ChoiceQuestion(
+            'Профиль пользователя',
+            $questions,
+            0
+        );
+
+        $result = $helper->ask($input, $output, $question);
+
+        if($result === 'Все')
+        {
+            foreach($this->country as $country)
+            {
+                $this->update($country);
+            }
+
+            $io->success('Cписок регионов успешно обновлен');
+
+            return Command::SUCCESS;
+        }
+
+
+        $update = null;
+
+        foreach($this->country as $country)
+        {
+            if($country->getValue() === $result)
+            {
+                $update = $country;
+                break;
+            }
+        }
+
+        if($update)
+        {
+            $this->update($update);
+            $io->success(sprintf('Регион %s успешно обновлен', $this->translator->trans($update->getValue(), domain: 'field-country')));
+        }
+
+        return Command::SUCCESS;
+    }
+
+
+
+    public function update(CountryInterface $country): void
+    {
+
+
+        foreach($this->regions->cases($country) as $region)
+        {
+            dump($region);
+        }
+
+        return;
+
+
 
         $regions = include __DIR__.'/regions.php';
 
@@ -101,15 +178,7 @@ class UpgradeRegionCommand extends Command implements ProjectUpgradeInterface
             $this->handler->handle($RegionDTO);
 
         }
-
-        $io->success('Cписок регионов успешно обновлен');
-
-        return Command::SUCCESS;
     }
 
-    /** Чам выше число - тем первым в итерации будет значение */
-    public static function priority(): int
-    {
-        return 99;
-    }
+
 }

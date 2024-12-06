@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -21,47 +21,8 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\Entity\Invariable;
 
-namespace BaksDev\Reference\Region\Choice;
-
-use BaksDev\Core\Services\Fields\FieldsChoiceInterface;
-use BaksDev\Core\Services\Reference\ReferenceChoiceInterface;
-use BaksDev\Reference\Region\Form\RegionField\RegionFieldForm;
-use BaksDev\Reference\Region\Type\Id\RegionUid;
-
-final class RegionFieldChoice implements FieldsChoiceInterface, ReferenceChoiceInterface
+interface RegionInvariableInterface
 {
-    public function equals($key): bool
-    {
-        return $key === RegionUid::TYPE;
-    }
-
-    public function type(): string
-    {
-        return RegionUid::TYPE;
-    }
-
-    public function class(): string
-    {
-        return RegionUid::class;
-    }
-
-
-    public function domain(): string
-    {
-        return 'reference-region.admin';
-    }
-
-
-    /** Возвращает класс формы для рендера */
-    public function form(): string
-    {
-        return RegionFieldForm::class;
-    }
-
-    public function constraints(): ?array
-    {
-        return null;
-    }
 }

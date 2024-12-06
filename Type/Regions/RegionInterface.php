@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -21,57 +21,22 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\Type\Regions;
 
-namespace BaksDev\Reference\Region\Entity;
-
-use BaksDev\Reference\Region\Entity\Event\RegionEvent;
-use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-/* Region */
-
-#[ORM\Entity]
-#[ORM\Table(name: 'region')]
-class Region
+#[AutoconfigureTag('baks.region')]
+interface RegionInterface
 {
-    /** ID */
-    #[ORM\Id]
-    #[ORM\Column(type: RegionUid::TYPE)]
-    private RegionUid $id;
+    public function __toString(): string;
 
-    /** ID События */
-    #[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
-    private RegionEventUid $event;
+    public function country(): CountryInterface;
 
-    public function __construct()
-    {
-        $this->id = new RegionUid();
-    }
+    public static function getRegionUid(): RegionUid;
 
-    public function setRegion(RegionUid $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
+    public static function priority(): int;
 
-
-    public function getId(): RegionUid
-    {
-        return $this->id;
-    }
-
-
-    public function getEvent(): RegionEventUid
-    {
-        return $this->event;
-    }
-
-
-    public function setEvent(RegionEventUid|RegionEvent $event): void
-    {
-        $this->event = $event instanceof RegionEvent ? $event->getId() : $event;
-    }
-
+    public static function equals(mixed $value): bool;
 }

@@ -23,55 +23,43 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Entity;
+namespace BaksDev\Reference\Region\Type\Regions;
 
-use BaksDev\Reference\Region\Entity\Event\RegionEvent;
-use BaksDev\Reference\Region\Type\Event\RegionEventUid;
-use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Doctrine\ORM\Mapping as ORM;
+use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
-/* Region */
-
-#[ORM\Entity]
-#[ORM\Table(name: 'region')]
-class Region
+final readonly class RegionCollection
 {
-    /** ID */
-    #[ORM\Id]
-    #[ORM\Column(type: RegionUid::TYPE)]
-    private RegionUid $id;
+    public function __construct(
+        #[AutowireIterator('baks.region', defaultPriorityMethod: 'priority')] private iterable $status
+    ) {}
 
-    /** ID События */
-    #[ORM\Column(type: RegionEventUid::TYPE, unique: true)]
-    private RegionEventUid $event;
-
-    public function __construct()
+    /**
+     * Возвращает массив из значений Region
+     */
+    public function cases(?CountryInterface $country = null): array
     {
-        $this->id = new RegionUid();
-    }
+        $case = null;
 
-    public function setRegion(RegionUid $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
+        foreach($this->status as $key => $value)
+        {
+            /** @var RegionInterface $region */
+            $region = new $value();
 
+            if(true === is_null($country))
+            {
+                $case[$region::priority().$key] = $region;
+            }
 
-    public function getId(): RegionUid
-    {
-        return $this->id;
-    }
+            if(false === is_null($country) && $region->country()::equals($country))
+            {
+                $case[$region::priority().$key] = $region;
+            }
+        }
 
+        ksort($case);
 
-    public function getEvent(): RegionEventUid
-    {
-        return $this->event;
-    }
-
-
-    public function setEvent(RegionEventUid|RegionEvent $event): void
-    {
-        $this->event = $event instanceof RegionEvent ? $event->getId() : $event;
+        return $case;
     }
 
 }

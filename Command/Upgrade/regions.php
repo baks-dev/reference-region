@@ -1,7 +1,7 @@
 <?php
 
 return [
-    ['ru' => 'Адыгея', 'en' => 'Adygea'],
+    ['ru' => 'Адыгея', 'en' => 'Adygea'], // Россия
     ['ru' => 'Алтайский край', 'en' => 'Altai region'],
     ['ru' => 'Амурская обл.', 'en' => 'Amur region',],
     ['ru' => 'Архангельская обл.', 'en' => 'Arkhangelsk region',],
@@ -45,7 +45,7 @@ return [
     ['ru' => 'Новгородская обл.', 'en' => 'Novgorod region',],
     ['ru' => 'Новосибирская обл.', 'en' => 'Novosibirsk region',],
     ['ru' => 'Омская обл.', 'en' => 'Omsk region',],
-    ['ru' => 'Оренбургская обл.', 'en' => 'Orenburg region',],
+    ['ru' => 'Оренбургская обл.', 'en' => 'Orenburg Oblast',],
     ['ru' => 'Орловская обл.', 'en' => 'Oryol region',],
     ['ru' => 'Пензенская обл.', 'en' => 'Penza region',],
     ['ru' => 'Пермская обл.', 'en' => 'Perm Region',],
