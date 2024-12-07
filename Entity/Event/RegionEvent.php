@@ -76,7 +76,6 @@ class RegionEvent extends EntityEvent
         $this->id = clone $this->id;
     }
 
-
     public function __toString(): string
     {
         return (string) $this->id;
