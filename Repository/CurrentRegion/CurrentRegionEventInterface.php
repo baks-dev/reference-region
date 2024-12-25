@@ -21,46 +21,21 @@
  *  THE SOFTWARE.
  */
 
-declare(strict_types=1);
+namespace BaksDev\Reference\Region\Repository\CurrentRegion;
 
-namespace BaksDev\Reference\Region\Type\Regions;
+use BaksDev\Reference\Region\Entity\Event\RegionEvent;
+use BaksDev\Reference\Region\Entity\Region;
+use BaksDev\Reference\Region\Type\Event\RegionEventUid;
+use BaksDev\Reference\Region\Type\Id\RegionUid;
 
-use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
-
-final readonly class RegionCollection
+interface CurrentRegionEventInterface
 {
-    public function __construct(
-        #[AutowireIterator('baks.region', defaultPriorityMethod: 'priority')] private iterable $status
-    ) {}
+    public function region(Region|RegionUid|string $region): self;
+
+    public function event(RegionEvent|RegionEventUid|string $event): self;
 
     /**
-     * Возвращает массив из значений Region
-     * @return array<RegionInterface>
+     * Метод возвращает активное событие региона
      */
-    public function cases(?CountryInterface $country = null): array
-    {
-        $case = null;
-
-        foreach($this->status as $key => $value)
-        {
-            /** @var RegionInterface $region */
-            $region = new $value();
-
-            if(true === is_null($country))
-            {
-                $case[$region::priority().$key] = $region;
-            }
-
-            if(false === is_null($country) && $region->country()::equals($country))
-            {
-                $case[$region::priority().$key] = $region;
-            }
-        }
-
-        ksort($case);
-
-        return $case;
-    }
-
+    public function find(): RegionEvent|false;
 }

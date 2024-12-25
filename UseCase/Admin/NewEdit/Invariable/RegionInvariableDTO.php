@@ -23,44 +23,45 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Reference\Region\Type\Regions;
+namespace BaksDev\Reference\Region\UseCase\Admin\NewEdit\Invariable;
 
-use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use BaksDev\Reference\Region\Entity\Invariable\RegionInvariableInterface;
 
-final readonly class RegionCollection
+/** @see RegionInvariable */
+final class RegionInvariableDTO implements RegionInvariableInterface
 {
-    public function __construct(
-        #[AutowireIterator('baks.region', defaultPriorityMethod: 'priority')] private iterable $status
-    ) {}
+    /** Сортировка */
+    private int $sort = 500;
 
-    /**
-     * Возвращает массив из значений Region
-     * @return array<RegionInterface>
-     */
-    public function cases(?CountryInterface $country = null): array
+    /** Флаг активности */
+    private bool $active = true;
+
+    /** Сортировка */
+
+    public function getSort(): int
     {
-        $case = null;
-
-        foreach($this->status as $key => $value)
-        {
-            /** @var RegionInterface $region */
-            $region = new $value();
-
-            if(true === is_null($country))
-            {
-                $case[$region::priority().$key] = $region;
-            }
-
-            if(false === is_null($country) && $region->country()::equals($country))
-            {
-                $case[$region::priority().$key] = $region;
-            }
-        }
-
-        ksort($case);
-
-        return $case;
+        return $this->sort;
     }
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+
+    /** Флаг активности */
+
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
 
 }

@@ -1,17 +1,17 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
- *
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *
+ *  
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *
+ *  
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,12 +23,10 @@
 
 namespace BaksDev\Reference\Region\Command\Upgrade;
 
-use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
-use BaksDev\Reference\Region\Entity\Region;
-use BaksDev\Reference\Region\Type\Id\RegionUid;
+use BaksDev\Reference\Region\Repository\CurrentRegion\CurrentRegionEventInterface;
 use BaksDev\Reference\Region\Type\Regions\RegionCollection;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionDTO;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionHandler;
@@ -50,22 +48,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeRegionCommand extends Command
 {
-    private DBALQueryBuilder $DBALQueryBuilder;
-    private RegionHandler $handler;
-
 
     public function __construct(
         #[AutowireIterator('baks.country')] private readonly iterable $country,
         private readonly RegionCollection $regions,
         private readonly TranslatorInterface $translator,
-        DBALQueryBuilder $DBALQueryBuilder,
-        RegionHandler $handler
+        private readonly CurrentRegionEventInterface $CurrentRegionEvent,
+        private readonly DBALQueryBuilder $DBALQueryBuilder,
+        private readonly RegionHandler $handler
     )
     {
         parent::__construct();
-
-        $this->DBALQueryBuilder = $DBALQueryBuilder;
-        $this->handler = $handler;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -126,42 +119,53 @@ class UpgradeRegionCommand extends Command
     }
 
 
-
     public function update(CountryInterface $country): void
     {
 
-
         foreach($this->regions->cases($country) as $region)
         {
-            dump($region);
+            $RegionUid = $region::getRegionUid();
+
+            $RegionEvent = $this
+                ->CurrentRegionEvent
+                ->region($RegionUid)
+                ->find();
+
+            if($RegionEvent)
+            {
+                /** @var RegionDTO $RegionDTO */
+                $RegionDTO = $RegionEvent->getDto(RegionDTO::class);
+                $this->handler->handle($RegionDTO);
+                continue;
+            }
+
+
+            $RegionDTO = new RegionDTO();
+            $RegionDTO->withRegion($RegionUid);
+
+            /** @var Locale $local */
+            foreach(Locale::cases() as $local)
+            {
+                $RegionTransDTO = new RegionTransDTO();
+                $RegionTransDTO->setLocal($local);
+                $RegionTransDTO->setName($region[$local->getLocalValue()]);
+                $RegionDTO->addTranslate($RegionTransDTO);
+            }
+
+            //dd($RegionDTO);
+
+            $this->handler->handle($RegionDTO);
+
         }
 
         return;
-
 
 
         $regions = include __DIR__.'/regions.php';
 
         foreach($regions as $region)
         {
-            $RegionUid = new RegionUid();
-            $md5 = md5(implode('', $region));
-            $RegionUid->md5($md5);
 
-            /** Делаем проверку на существующий регион */
-
-            $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
-
-            $isExists = $dbal
-                ->from(Region::class, 'main')
-                ->where('id = :main')
-                ->setParameter('main', $RegionUid, RegionUid::TYPE)
-                ->fetchExist();
-
-            if($isExists)
-            {
-                continue;
-            }
 
             $RegionDTO = new RegionDTO();
             $RegionDTO->withRegion($RegionUid);
