@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
 use BaksDev\Reference\Region\Repository\CurrentRegion\CurrentRegionEventInterface;
 use BaksDev\Reference\Region\Type\Regions\RegionCollection;
+use BaksDev\Reference\Region\Type\Regions\RegionInterface;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionDTO;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\RegionHandler;
 use BaksDev\Reference\Region\UseCase\Admin\NewEdit\Trans\RegionTransDTO;
@@ -118,10 +119,9 @@ class UpgradeRegionCommand extends Command
         return Command::SUCCESS;
     }
 
-
     public function update(CountryInterface $country): void
     {
-
+        /** @var RegionInterface $region */
         foreach($this->regions->cases($country) as $region)
         {
             $RegionUid = $region::getRegionUid();
@@ -133,49 +133,20 @@ class UpgradeRegionCommand extends Command
 
             if($RegionEvent)
             {
-                /** @var RegionDTO $RegionDTO */
-                $RegionDTO = $RegionEvent->getDto(RegionDTO::class);
-                $this->handler->handle($RegionDTO);
                 continue;
             }
 
-
             $RegionDTO = new RegionDTO();
             $RegionDTO->withRegion($RegionUid);
 
             /** @var Locale $local */
             foreach(Locale::cases() as $local)
             {
+                $name = $this->translator->trans($region::ID, domain: 'reference-region', locale: $local->getLocalValue());
+
                 $RegionTransDTO = new RegionTransDTO();
                 $RegionTransDTO->setLocal($local);
-                $RegionTransDTO->setName($region[$local->getLocalValue()]);
-                $RegionDTO->addTranslate($RegionTransDTO);
-            }
-
-            //dd($RegionDTO);
-
-            $this->handler->handle($RegionDTO);
-
-        }
-
-        return;
-
-
-        $regions = include __DIR__.'/regions.php';
-
-        foreach($regions as $region)
-        {
-
-
-            $RegionDTO = new RegionDTO();
-            $RegionDTO->withRegion($RegionUid);
-
-            /** @var Locale $local */
-            foreach(Locale::cases() as $local)
-            {
-                $RegionTransDTO = new RegionTransDTO();
-                $RegionTransDTO->setLocal($local);
-                $RegionTransDTO->setName($region[$local->getLocalValue()]);
+                $RegionTransDTO->setName($name);
                 $RegionDTO->addTranslate($RegionTransDTO);
             }
 
