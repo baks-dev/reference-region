@@ -25,7 +25,7 @@ namespace BaksDev\Reference\Region\Command\Upgrade;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
+use BaksDev\Field\Country\Type\Country\CountryInterface;
 use BaksDev\Reference\Region\Repository\CurrentRegion\CurrentRegionEventInterface;
 use BaksDev\Reference\Region\Type\Regions\RegionCollection;
 use BaksDev\Reference\Region\Type\Regions\RegionInterface;

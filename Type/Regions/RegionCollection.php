@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Type\Regions;
 
-use BaksDev\Field\Country\Type\Country\Collection\CountryInterface;
+use BaksDev\Field\Country\Type\Country\CountryInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final readonly class RegionCollection
