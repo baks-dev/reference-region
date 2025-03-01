@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Type\Regions\Belarus;
 
-use BaksDev\Field\Country\Type\Country\Belarus;
+use BaksDev\Field\Country\Type\Country\Collection\Belarus;
 use BaksDev\Field\Country\Type\Country\CountryInterface;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use BaksDev\Reference\Region\Type\Regions\RegionInterface;

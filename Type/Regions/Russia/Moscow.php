@@ -25,8 +25,8 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Type\Regions\Russia;
 
+use BaksDev\Field\Country\Type\Country\Collection\Russia;
 use BaksDev\Field\Country\Type\Country\CountryInterface;
-use BaksDev\Field\Country\Type\Country\Russia;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
 use BaksDev\Reference\Region\Type\Regions\RegionInterface;
 
