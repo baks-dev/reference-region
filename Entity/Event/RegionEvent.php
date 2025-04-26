@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -54,15 +54,15 @@ class RegionEvent extends EntityEvent
     private ?RegionUid $region = null;
 
     /** Модификатор */
-    #[ORM\OneToOne(targetEntity: RegionModify::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: RegionModify::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private RegionModify $modify;
 
     /** Модификатор */
-    #[ORM\OneToOne(targetEntity: RegionInvariable::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: RegionInvariable::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private RegionInvariable $invariable;
 
     /** Перевод */
-    #[ORM\OneToMany(targetEntity: RegionTrans::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: RegionTrans::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private Collection $translate;
 
     public function __construct()
