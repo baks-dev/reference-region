@@ -59,7 +59,6 @@ final class SaintPetersburg implements RegionInterface
         return 100;
     }
 
-
     public static function equals(mixed $value): bool
     {
         $value = (string) mb_strtolower($value);
