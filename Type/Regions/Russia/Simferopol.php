@@ -31,13 +31,13 @@ use BaksDev\Reference\Region\Type\Id\RegionUid;
 use BaksDev\Reference\Region\Type\Regions\RegionInterface;
 
 /**
- * Республика Крым
+ * Симферополь
  */
-final class Crimea implements RegionInterface
+final class Simferopol implements RegionInterface
 {
-    public const string TYPE = 'rc';
+    public const string TYPE = 'simf';
 
-    public const string ID = '441ede61-f29c-7fe5-8488-8c88e08d6538';
+    public const string ID = '0115f6fc-d936-7a81-bde4-2e4096684f66';
 
     public function __toString(): string
     {
@@ -56,7 +56,7 @@ final class Crimea implements RegionInterface
 
     public static function priority(): int
     {
-        return 100;
+        return 120;
     }
 
     public static function equals(mixed $value): bool
