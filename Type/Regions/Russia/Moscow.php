@@ -37,6 +37,10 @@ final class Moscow implements RegionInterface
 {
     public const string TYPE = 'msk';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '201042a6-c35d-7bc4-9cb9-ef8bc1c8711e';
 
     public function __toString(): string

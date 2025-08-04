@@ -37,6 +37,10 @@ final class Vladivostok implements RegionInterface
 {
     public const string TYPE = 'vvo';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '6edd1678-7107-75b8-9b3d-af5435e99463';
 
     public function __toString(): string

@@ -37,6 +37,10 @@ final class Rostov implements RegionInterface
 {
     public const string TYPE = 'rnb';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = 'b4cfd2db-e651-7657-a5e3-283e5407fbed';
 
     public function __toString(): string

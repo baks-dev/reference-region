@@ -37,6 +37,10 @@ final class SaintPetersburg implements RegionInterface
 {
     public const string TYPE = 'spb';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '800a6e76-e894-76ca-88e9-50d7afe5de3e';
 
     public function __toString(): string

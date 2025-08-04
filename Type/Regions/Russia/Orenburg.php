@@ -37,6 +37,10 @@ final class Orenburg implements RegionInterface
 {
     public const string TYPE = 'orb';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '73ca3091-7c43-719e-9cb9-be5b4d1ab444';
 
     public function __toString(): string

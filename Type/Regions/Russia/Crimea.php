@@ -37,6 +37,10 @@ final class Crimea implements RegionInterface
 {
     public const string TYPE = 'rc';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '441ede61-f29c-7fe5-8488-8c88e08d6538';
 
     public function __toString(): string

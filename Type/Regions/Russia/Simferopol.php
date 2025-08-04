@@ -37,6 +37,10 @@ final class Simferopol implements RegionInterface
 {
     public const string TYPE = 'simf';
 
+    /**
+     * @note Добавить в файл переводов идентификатор
+     * @see public/reference-region.ru.yaml
+     */
     public const string ID = '0115f6fc-d936-7a81-bde4-2e4096684f66';
 
     public function __toString(): string
