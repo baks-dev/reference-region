@@ -25,71 +25,60 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Repository\ReferenceRegionChoice;
 
-use BaksDev\Core\Doctrine\ORMQueryBuilder;
-use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Reference\Region\Entity\Event\RegionEvent;
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Reference\Region\Entity\Invariable\RegionInvariable;
 use BaksDev\Reference\Region\Entity\Region;
 use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Generator;
 
 final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInterface
 {
-    private TranslatorInterface $translator;
-    private ORMQueryBuilder $ORMQueryBuilder;
+
+    private DBALQueryBuilder $DBALQueryBuilder;
 
 
     public function __construct(
-        ORMQueryBuilder $ORMQueryBuilder,
-        TranslatorInterface $translator
+        DBALQueryBuilder $DBALQueryBuilder,
     )
     {
-
-        $this->translator = $translator;
-        $this->ORMQueryBuilder = $ORMQueryBuilder;
+        $this->DBALQueryBuilder = $DBALQueryBuilder;
     }
 
 
-    public function getRegionChoice()
+    public function getRegionChoice(): Generator|false
     {
-        $qb = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
-        //$qb->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
+        $dbal = $this->DBALQueryBuilder
+            ->createQueryBuilder(self::class)
+            ->bindLocal();
 
-        $select = sprintf('new %s(region.id, trans.name)', RegionUid::class);
-        $qb->select($select);
+        $dbal->select('region.id as value');
+        $dbal->from(Region::class, 'region');
 
-        $qb->from(Region::class, 'region');
-
-
-        $qb->join(
-            RegionInvariable::class,
-            'invariable',
-            'WITH',
-            'invariable.main = region.id AND invariable.active = true'
-        );
-
-        $qb
-            ->leftJoin(
-                RegionTrans::class,
-                'trans',
-                'WITH',
-                'trans.event = region.event AND trans.local = :local'
-            )
-            ->setParameter(
-                'local',
-                new Locale($this->translator->getLocale()),
-                Locale::TYPE
+        $dbal
+            ->join(
+                'region',
+                RegionInvariable::class,
+                'region_invariable',
+                'region_invariable.main = region.id AND region_invariable.active = true'
             );
 
-        $qb->orderBy('invariable.sort');
-        $qb->addOrderBy('trans.name');
+        $dbal
+            ->addSelect('region_trans.name as option')
+            ->leftJoin(
+                'region',
+                RegionTrans::class,
+                'region_trans',
+                'region_trans.event = region.event AND region_trans.local = :local'
+            );
 
-        /* Кешируем результат ORM */
-        return $qb
-            //->enableCache('reference-region', 86400)
-            ->getResult();
+        $dbal->orderBy('region.id');
+        $dbal->addOrderBy('region_trans.name');
+
+        $result = $dbal->fetchAllHydrate(RegionUid::class);
+
+        return $result->valid() ? $result : false;
     }
 
 }
