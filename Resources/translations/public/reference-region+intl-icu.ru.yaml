@@ -50,58 +50,58 @@
 
 73ca3091-7c43-719e-9cb9-be5b4d1ab444: >
   {city, select,
-      nominative { 'Оренбург и Оренбургская обл' }
-      genitive { 'Оренбурга и Оренбургской обл' }
-      dative { 'Оренбургу и Оренбургской обл' }
-      accusative { 'Оренбург и Оренбургскую обл' }
-      instrumental { 'Оренбургом и Оренбургской обл' }
-      prepositional { 'Оренбурге и Оренбургской обл' }
-      other { 'Оренбург и Оренбургская обл' }
+      nominative { Оренбург и Оренбургская обл }
+      genitive { Оренбурга и Оренбургской обл }
+      dative { Оренбургу и Оренбургской обл }
+      accusative { Оренбург и Оренбургскую обл }
+      instrumental { Оренбургом и Оренбургской обл }
+      prepositional { Оренбурге и Оренбургской обл }
+      other { Оренбург и Оренбургская обл }
   }
 
 
 b4cfd2db-e651-7657-a5e3-283e5407fbed: >
   {city, select,
-      nominative { 'Ростов и Ростовская обл' }
-      genitive { 'Ростова и Ростовской обл' }
-      dative { 'Ростову и Ростовской обл' }
-      accusative { 'Ростов и Ростовскую обл' }
-      instrumental { 'Ростовом и Ростовской обл' }
-      prepositional { 'Ростове и Ростовской обл' }
-      other { 'Ростов и Ростовская обл' }
+      nominative { Ростов и Ростовская обл }
+      genitive { Ростова и Ростовской обл }
+      dative { Ростову и Ростовской обл }
+      accusative { Ростов и Ростовскую обл }
+      instrumental { Ростовом и Ростовской обл }
+      prepositional { Ростове и Ростовской обл }
+      other { Ростов и Ростовская обл }
   }
 
 
 800a6e76-e894-76ca-88e9-50d7afe5de3e: >
   {city, select,
-      nominative { 'Санкт-Петербург' }
-      genitive { 'Санкт-Петербурга' }
-      dative { 'Санкт-Петербургу' }
-      accusative { 'Санкт-Петербург' }
-      instrumental { 'Санкт-Петербургом' }
-      prepositional { 'Санкт-Петербурге' }
-      other { 'Санкт-Петербург' }
+      nominative { Санкт-Петербург }
+      genitive { Санкт-Петербурга }
+      dative { Санкт-Петербургу }
+      accusative { Санкт-Петербург }
+      instrumental { Санкт-Петербургом }
+      prepositional { Санкт-Петербурге }
+      other { Санкт-Петербург }
   }
 
 
 0115f6fc-d936-7a81-bde4-2e4096684f66: >
   {city, select,
-      nominative { 'Симферополь' }
-      genitive { 'Симферополя' }
-      dative { 'Симферополю' }
-      accusative { 'Симферополь' }
-      instrumental { 'Симферополем' }
-      prepositional { 'Симферополе' }
-      other { 'Симферополь' }
+      nominative { Симферополь }
+      genitive { Симферополя }
+      dative { Симферополю }
+      accusative { Симферополь }
+      instrumental { Симферополем }
+      prepositional { Симферополе }
+      other { Симферополь }
   }
 
 6edd1678-7107-75b8-9b3d-af5435e99463: >
   {city, select,
-      nominative { 'Владивосток' }
-      genitive { 'Владивоста' }
-      dative { 'Владивостоку' }
-      accusative { 'Владивосток' }
-      instrumental { 'Владивостоком' }
-      prepositional { 'Владивостоке' }
-      other { 'Владивосток' }
+      nominative { Владивосток }
+      genitive { Владивоста }
+      dative { Владивостоку }
+      accusative { Владивосток }
+      instrumental { Владивостоком }
+      prepositional { Владивостоке }
+      other { Владивосток }
   }
