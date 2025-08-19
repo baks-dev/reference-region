@@ -1,16 +1,5 @@
 placeholder: 'Select a region from the list...'
 label: 'Region'
 
-# Belarus
 
-60d71f7e-24c2-75fb-ad24-ebed593c4966: 'Gomel'
 
-# Russia
-
-441ede61-f29c-7fe5-8488-8c88e08d6538: 'Republic of Crimea'
-201042a6-c35d-7bc4-9cb9-ef8bc1c8711e: 'Moscow and Moscow region'
-73ca3091-7c43-719e-9cb9-be5b4d1ab444: 'Orenburg and Orenburg region'
-b4cfd2db-e651-7657-a5e3-283e5407fbed: 'Rostov and Rostov Region'
-800a6e76-e894-76ca-88e9-50d7afe5de3e: 'Saint Petersburg'
-0115f6fc-d936-7a81-bde4-2e4096684f66: 'Simferopol'
-6edd1678-7107-75b8-9b3d-af5435e99463: 'Vladivostok'
