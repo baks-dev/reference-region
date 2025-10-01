@@ -1,17 +1,17 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
- *
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *
+ *  
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *
+ *  
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,71 +25,56 @@ declare(strict_types=1);
 
 namespace BaksDev\Reference\Region\Repository\ReferenceRegionChoice;
 
-use BaksDev\Core\Doctrine\ORMQueryBuilder;
-use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Reference\Region\Entity\Event\RegionEvent;
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Reference\Region\Entity\Invariable\RegionInvariable;
 use BaksDev\Reference\Region\Entity\Region;
 use BaksDev\Reference\Region\Entity\Trans\RegionTrans;
 use BaksDev\Reference\Region\Type\Id\RegionUid;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Generator;
 
-final class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInterface
+final readonly class ReferenceRegionChoiceRepository implements ReferenceRegionChoiceInterface
 {
-    private TranslatorInterface $translator;
-    private ORMQueryBuilder $ORMQueryBuilder;
-
-
     public function __construct(
-        ORMQueryBuilder $ORMQueryBuilder,
-        TranslatorInterface $translator
-    )
+        private DBALQueryBuilder $DBALQueryBuilder,
+    ) {}
+
+    /**
+     * Метод возвращает список идентификаторов регионов
+     *
+     * @return Generator<RegionUid>|false
+     */
+    public function getRegionChoice(): Generator|false
     {
+        $dbal = $this->DBALQueryBuilder
+            ->createQueryBuilder(self::class)
+            ->bindLocal();
 
-        $this->translator = $translator;
-        $this->ORMQueryBuilder = $ORMQueryBuilder;
-    }
+        $dbal
+            ->addSelect('region.id AS value')
+            ->from(Region::class, 'region');
 
-
-    public function getRegionChoice()
-    {
-        $qb = $this->ORMQueryBuilder->createQueryBuilder(self::class);
-
-        //$qb->setParameter('local', new Locale($this->translator->getLocale()), Locale::TYPE);
-
-        $select = sprintf('new %s(region.id, trans.name)', RegionUid::class);
-        $qb->select($select);
-
-        $qb->from(Region::class, 'region');
-
-
-        $qb->join(
+        $dbal->join(
             RegionInvariable::class,
             'invariable',
             'WITH',
-            'invariable.main = region.id AND invariable.active = true'
+            'invariable.main = region.id AND invariable.active = true',
         );
 
-        $qb
+        $dbal
+            ->addSelect('trans.name AS option')
             ->leftJoin(
                 RegionTrans::class,
                 'trans',
                 'WITH',
-                'trans.event = region.event AND trans.local = :local'
-            )
-            ->setParameter(
-                'local',
-                new Locale($this->translator->getLocale()),
-                Locale::TYPE
+                'trans.event = region.event AND trans.local = :local',
             );
 
-        $qb->orderBy('invariable.sort');
-        $qb->addOrderBy('trans.name');
+        $dbal->orderBy('invariable.sort');
+        $dbal->addOrderBy('trans.name');
 
-        /* Кешируем результат ORM */
-        return $qb
+        return $dbal
             //->enableCache('reference-region', 86400)
-            ->getResult();
+            ->fetchAllHydrate(RegionUid::class);
     }
 
 }
