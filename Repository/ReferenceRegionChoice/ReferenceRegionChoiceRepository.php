@@ -54,18 +54,18 @@ final readonly class ReferenceRegionChoiceRepository implements ReferenceRegionC
             ->from(Region::class, 'region');
 
         $dbal->join(
+            'region',
             RegionInvariable::class,
             'invariable',
-            'WITH',
             'invariable.main = region.id AND invariable.active = true',
         );
 
         $dbal
             ->addSelect('trans.name AS option')
             ->leftJoin(
+                'region',
                 RegionTrans::class,
                 'trans',
-                'WITH',
                 'trans.event = region.event AND trans.local = :local',
             );
 
