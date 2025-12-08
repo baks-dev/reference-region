@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -33,12 +33,9 @@ final class RegionHandler extends AbstractHandler
 {
     public function handle(RegionDTO $command): string|Region
     {
-
-        //dump($command);
-
-        $this->setCommand($command);
-
-        $this->preEventPersistOrUpdate(Region::class, RegionEvent::class);
+        $this
+            ->setCommand($command)
+            ->preEventPersistOrUpdate(Region::class, RegionEvent::class);
 
         if(!$command->getEvent() && $command->getRegion())
         {
@@ -50,22 +47,6 @@ final class RegionHandler extends AbstractHandler
         {
             return $this->validatorCollection->getErrorUniqid();
         }
-
-        /** Валидация DTO  */
-        $this->validatorCollection->add($command);
-
-        //        $this->main = new Region();
-        //        $this->event = new RegionEvent();
-        //
-        //        try
-        //        {
-        //            $command->getEvent() ? $this->preUpdate($command, true) : $this->prePersist($command);
-        //        }
-        //        catch(DomainException $errorUniqid)
-        //        {
-        //            return $errorUniqid->getMessage();
-        //        }
-
 
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
